@@ -4,8 +4,8 @@ module.exports = {
 	singleQuote: true,
 	jsxSingleQuote: true,
 	bracketSameLine: true,
-	printWidth: 80,
+	printWidth: 120,
 	useTabs: true,
-	tabWidth: 2,
+	tabWidth: 4,
 	endOfLine: 'lf',
 };
