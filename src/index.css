@@ -1,11 +1,12 @@
+@import url('./theme/constants.css');
+
 body {
+	margin: 0;
+	padding: 0;
+	color: var(--c-text-dark);
 	font-family: 'Arial', 'Helvetica', sans-serif;
 }
 
-header {
-	border: 1px solid #000000;
-}
-
-footer {
-	border: 1px solid #000000;
+* {
+	box-sizing: border-box;
 }
