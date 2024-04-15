@@ -31,7 +31,7 @@ function CardList({ products }: IProps) {
 
 	return (
 		<>
-			<Grid container rowSpacing={{ xs: 5 }} columnSpacing={{ xs: 1, sm: 2 }} sx={{ padding: '40px 0' }}>
+			<Grid container rowSpacing={{ xs: 5 }} columnSpacing={{ xs: 1, sm: 2 }} py='40px'>
 				{productsToShow.map((item) => {
 					return <ProductCard key={item.id} {...item} />;
 				})}
