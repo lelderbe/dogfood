@@ -1,5 +1,5 @@
-import { Avatar, Button, Grid, Stack } from '@mui/material';
-import { Container } from '@mui/system';
+import { Avatar, Button, Typography } from '@mui/material';
+import s from './style.module.css';
 
 type ProfilePageProps = {
 	currentUser: IUser | null;
@@ -7,26 +7,19 @@ type ProfilePageProps = {
 
 function ProfilePage({ currentUser }: ProfilePageProps) {
 	return (
-		<Container maxWidth='lg'>
-			<Grid container spacing={2}>
-				<Grid item xs={12} md={4}>
-					<Avatar
-						alt={currentUser?.name}
-						src={currentUser?.avatarPath ? currentUser.avatarPath : '/static/images/avatar/1.jpg'}
-						sx={{ width: 150, height: 150 }}
-					/>
-					<p>{currentUser?.name}</p>
-					<p>{currentUser?.about}</p>
-
-					<Stack>
-						<Button variant='outlined'>Редактировать профиль</Button>
-						<Button variant='outlined' color='secondary'>
-							Изменить аватар
-						</Button>
-					</Stack>
-				</Grid>
-			</Grid>
-		</Container>
+		<>
+			<Typography className={s.title}>Профиль</Typography>
+			<Avatar
+				alt={currentUser?.name}
+				src={currentUser?.avatarPath ? currentUser.avatarPath : '/static/images/avatar/1.jpg'}
+				sx={{ width: 150, height: 150, mb: '20px' }}
+			/>
+			<Typography className={s.name}>{currentUser && currentUser.name}</Typography>
+			<Button className={s.btn} sx={{ mb: '40px' }}>
+				Изменить
+			</Button>
+			<Button className={s.btn}>Выйти</Button>
+		</>
 	);
 }
 export default ProfilePage;

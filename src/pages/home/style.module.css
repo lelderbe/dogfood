@@ -1,0 +1,30 @@
+.promo__img {
+	display: block;
+	width: 490px;
+}
+
+.promo__left {
+	max-width: 425px;
+}
+
+.title {
+	margin-bottom: 20px;
+	font: 900 48px / 52px var(--ff-primary);
+}
+
+.text {
+	margin-bottom: 40px;
+	font: 300 24px / 28px var(--ff-primary);
+}
+
+.btn_catalog {
+	display: flex;
+	align-items: center;
+	align-self: flex-start;
+	padding: 16px 16px 16px 28px;
+	color: rgb(26 26 26);
+	font: 800 20px / 24px var(--ff-primary);
+	background: rgb(255 255 255);
+	border-radius: 60px;
+	box-shadow: 0 2px 16px 0 rgb(96 97 112 / 16%), 0 0 1px 0 rgb(40 41 61 / 2%);
+}

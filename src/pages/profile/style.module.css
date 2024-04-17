@@ -1,0 +1,21 @@
+.title {
+	margin-bottom: 20px;
+	font: 800 28px / 32px var(--ff-primary);
+}
+
+.name {
+	margin-bottom: 24px;
+	font: 800 20px / 24px var(--ff-primary);
+}
+
+.btn {
+	display: flex;
+	align-items: center;
+	align-self: flex-start;
+	padding: 9px 16px;
+	color: rgb(26 26 26);
+	font: 800 20px / 24px var(--ff-primary);
+	background: rgb(255 255 255);
+	border-radius: 60px;
+	box-shadow: 0 2px 16px 0 rgb(96 97 112 / 16%), 0 0 1px 0 rgb(40 41 61 / 2%);
+}
