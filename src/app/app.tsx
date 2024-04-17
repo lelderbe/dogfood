@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import HomePage from '../pages/home/home-page';
@@ -7,13 +8,19 @@ import theme from '../styles/theme';
 import ProductsPage from '../pages/products';
 import ProfilePage from '../pages/profile';
 import NotFoundPage from '../pages/not-found';
-import { useState } from 'react';
-import { productsData } from '../products';
 import SingleProductPage from '../pages/single-product';
+import api from '../services/api';
 
 function App() {
-	const [products] = useState<IProduct[]>(productsData.products);
-	const currentUser = null;
+	const [products, setProducts] = useState<IProduct[]>([]);
+	const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+
+	useEffect(() => {
+		api.getAllInfo().then(([productsData, userInfoData]) => {
+			setCurrentUser(userInfoData);
+			setProducts(productsData.products);
+		});
+	}, []);
 
 	return (
 		<ThemeProvider theme={theme}>
