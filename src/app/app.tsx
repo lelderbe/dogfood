@@ -10,6 +10,7 @@ import ProfilePage from '../pages/profile';
 import NotFoundPage from '../pages/not-found';
 import SingleProductPage from '../pages/single-product';
 import api from '../services/api';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -33,16 +34,38 @@ function App() {
 				<CssBaseline />
 				<Header />
 				<Container component='main' disableGutters sx={{ padding: '20px 0', flex: '1' }}>
-					<HomePage />
+					<Routes>
+						<Route
+							path='/'
+							element={
+								<HomePage
+								// posts={posts}
+								// onPostLike={handlePostLike}
+								// currentUser={currentUser}
+								// onPostDelete={handlePostDelete}
+								/>
+							}
+						/>
+						<Route
+							path='/product'
+							element={
+								<SingleProductPage
+									// onPostLike={handlePostLike}
+									currentUser={currentUser}
+									// onPostDelete={handlePostDelete}
+								/>
+							}
+						/>
+						<Route path='/profile' element={<ProfilePage currentUser={currentUser} />} />
+						<Route
+							path='/products'
+							element={<ProductsPage products={products} currentUser={currentUser} />}
+						/>
+						<Route path='*' element={<NotFoundPage />} />
+					</Routes>
+
 					{/* <ProductsPage products={products} onPostLike={handlePostLike} currentUser={currentUser} /> */}
-					<ProductsPage products={products} currentUser={currentUser} />
-					<SingleProductPage
-						// onPostLike={handlePostLike}
-						// onPostDelete={handlePostDelete}
-						currentUser={currentUser}
-					/>
-					<ProfilePage currentUser={currentUser} />
-					<NotFoundPage />
+					{/* <ProductsPage products={products} currentUser={currentUser} /> */}
 				</Container>
 				<Footer />
 			</Box>

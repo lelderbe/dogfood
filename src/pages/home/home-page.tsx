@@ -2,6 +2,7 @@ import { Typography, Stack, Button } from '@mui/material';
 import promo from './assets/promo.png';
 import s from './style.module.css';
 import RightArrow from '../../icons/right-arrow';
+import { Link } from 'react-router-dom';
 
 function HomePage() {
 	return (
@@ -14,10 +15,12 @@ function HomePage() {
 						работы с доставкой по России и <br />
 						Миру
 					</Typography>
-					<Button className={s.btn_catalog}>
-						Каталог
-						<RightArrow />
-					</Button>
+					<Link to='/products'>
+						<Button className={s.btn_catalog}>
+							Каталог
+							<RightArrow />
+						</Button>
+					</Link>
 				</Stack>
 				<img className={s.promo__img} src={promo} alt='' />
 			</Stack>
