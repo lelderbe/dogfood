@@ -7,9 +7,11 @@ const PRODUCTS_PER_PAGE = 8;
 
 interface IProps {
 	products: IProduct[];
+	onProductLike: (productData: IProductLikeParams) => void;
+	currentUser: IUser | null;
 }
 
-function CardList({ products }: IProps) {
+function ProductsList({ products, onProductLike, currentUser }: IProps) {
 	const { getCurrentData, countPages, currentPage, setPagePaginated } = usePagination<IProduct>(
 		products,
 		PRODUCTS_PER_PAGE
@@ -33,7 +35,14 @@ function CardList({ products }: IProps) {
 		<>
 			<Grid container rowSpacing={{ xs: 5 }} columnSpacing={{ xs: 1, sm: 2 }} py='40px'>
 				{productsToShow.map((item) => {
-					return <ProductCard key={item.id} {...item} />;
+					return (
+						<ProductCard
+							key={item.id}
+							product={item}
+							onProductLike={onProductLike}
+							currentUser={currentUser}
+						/>
+					);
 				})}
 			</Grid>
 			<Stack spacing={2} sx={{ mt: 2 }} alignItems='center'>
@@ -43,4 +52,4 @@ function CardList({ products }: IProps) {
 	);
 }
 
-export default CardList;
+export default ProductsList;

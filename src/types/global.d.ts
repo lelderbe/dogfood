@@ -23,7 +23,7 @@ declare global {
 		stock: number;
 		tags: string[];
 		category?: ICategory;
-		likes?: ILike[];
+		likes?: ILikeUser[];
 		reviews?: IReview[];
 		user?: IUser;
 	}
@@ -38,8 +38,14 @@ declare global {
 		id: string;
 		userId: string;
 		productId: string;
-		user?: IUser;
+	}
+
+	interface ILikeProduct extends ILike {
 		product?: IProduct;
+	}
+
+	interface ILikeUser extends ILike {
+		user?: IUser;
 	}
 
 	interface IUser {
@@ -56,7 +62,7 @@ declare global {
 		about: string;
 		phone: string;
 		roles: string[];
-		likes?: ILike[];
+		likes?: ILikeProduct[];
 		favoritesPost?: IFavoritesPosts[];
 	}
 
@@ -89,5 +95,10 @@ declare global {
 		rating: number;
 		id: string;
 		product: IProduct;
+	}
+
+	interface IProductLikeParams {
+		id: string;
+		likes: ILikeUser[];
 	}
 }

@@ -3,20 +3,6 @@
 	width: 490px;
 }
 
-.promo__left {
-	max-width: 425px;
-}
-
-.title {
-	margin-bottom: 20px;
-	font: 900 48px / 52px var(--ff-primary);
-}
-
-.text {
-	margin-bottom: 40px;
-	font: 300 24px / 28px var(--ff-primary);
-}
-
 .btn_catalog {
 	display: flex;
 	align-items: center;

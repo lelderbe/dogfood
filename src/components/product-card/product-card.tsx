@@ -1,11 +1,20 @@
 import { Card, IconButton, Grid, CardMedia, Typography } from '@mui/material';
 import Button, { ButtonProps } from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import noImageAvailable from './assets/no-image-available.png';
 import { SyntheticEvent } from 'react';
+import { isLiked } from '../../utils/utils';
 
-function ProductCard({ images, name, price, wight }: IProduct) {
+interface IProps {
+	product: IProduct;
+	onProductLike: (productData: IProductLikeParams) => void;
+	currentUser: IUser | null;
+}
+
+function ProductCard({ product, onProductLike, currentUser }: IProps) {
+	const { id, images, name, price, wight, likes } = product;
+
 	const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 		boxShadow: 'none',
 		textTransform: 'none',
@@ -27,11 +36,19 @@ function ProductCard({ images, name, price, wight }: IProduct) {
 		},
 	}));
 
+	function handleLikeClick() {
+		if (likes) {
+			onProductLike({ id, likes });
+		}
+	}
+
+	const isProductLiked = isLiked(likes, currentUser?.id);
+
 	return (
 		<Grid item xs={6} sm={4} md={4} lg={3}>
 			<Card elevation={0} sx={{ position: 'relative', minWidth: '236px', maxWidth: '236px' }}>
-				<IconButton sx={{ position: 'absolute', top: '0px', right: '1px' }}>
-					<FavoriteBorderIcon />
+				<IconButton sx={{ position: 'absolute', top: '0px', right: '1px' }} onClick={handleLikeClick}>
+					<FavoriteIcon sx={{ fill: isProductLiked ? 'red' : '' }} />
 				</IconButton>
 				<CardMedia
 					component='img'

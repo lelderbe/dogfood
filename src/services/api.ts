@@ -14,10 +14,10 @@ type ProductListResponse = {
 
 type UserUpdateDto = Partial<Omit<IUser, 'favoritesPost' | 'id'> & { password: string }>;
 
-// type PostLikeResponse = {
-// 	favorites: IFavorite;
-// 	message: string;
-// };
+type TProductLikeResponse = {
+	message: string;
+	like: ILike;
+};
 
 export class Api {
 	private baseUrl;
@@ -65,14 +65,14 @@ export class Api {
 		});
 	}
 
-	// async changeLikePostStatus(postID: string, like: boolean) {
-	// 	return await this.request<PostLikeResponse>(`/posts/${postID}/favorite`, {
-	// 		method: like ? 'DELETE' : 'PUT',
-	// 	});
-	// }
+	async changeLikeProductStatus(productID: string, isProductLiked: boolean) {
+		return await this.request<TProductLikeResponse>(`/products/${productID}/likes`, {
+			method: isProductLiked ? 'DELETE' : 'PUT',
+		});
+	}
 
 	async getProductById(productID: string) {
-		return await this.request<IProduct>(`/posts/${productID}`);
+		return await this.request<IProduct>(`/products/${productID}`);
 	}
 
 	// async deletePostById(postID: string) {
