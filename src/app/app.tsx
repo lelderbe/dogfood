@@ -37,7 +37,7 @@ function App() {
 				currentProduct.id === updateProduct.id ? updateProduct : currentProduct
 			);
 			setProducts(newProducts);
-			// return updateProduct;
+			return updateProduct;
 		} catch (err) {
 			console.error(err);
 		}
@@ -55,27 +55,7 @@ function App() {
 				<Header />
 				<Container component='main' disableGutters sx={{ padding: '20px 0', flex: '1' }}>
 					<Routes>
-						<Route
-							path='/'
-							element={
-								<HomePage
-								// posts={posts}
-								// onPostLike={handlePostLike}
-								// currentUser={currentUser}
-								// onPostDelete={handlePostDelete}
-								/>
-							}
-						/>
-						<Route
-							path='/product'
-							element={
-								<SingleProductPage
-									// onPostLike={handlePostLike}
-									currentUser={currentUser}
-									// onPostDelete={handlePostDelete}
-								/>
-							}
-						/>
+						<Route path='/' element={<HomePage />} />
 						<Route path='/profile' element={<ProfilePage currentUser={currentUser} />} />
 						<Route
 							path='/products'
@@ -87,11 +67,18 @@ function App() {
 								/>
 							}
 						/>
+						<Route
+							path='/product/:id'
+							element={
+								<SingleProductPage
+									currentUser={currentUser}
+									onProductLike={handleProductLike}
+									// onPostDelete={handlePostDelete}
+								/>
+							}
+						/>
 						<Route path='*' element={<NotFoundPage />} />
 					</Routes>
-
-					{/* <ProductsPage products={products} onPostLike={handlePostLike} currentUser={currentUser} /> */}
-					{/* <ProductsPage products={products} currentUser={currentUser} /> */}
 				</Container>
 				<Footer />
 			</Box>

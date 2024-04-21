@@ -1,46 +1,69 @@
 import { useEffect, useState } from 'react';
-import { Container, Typography } from '@mui/material';
+import { Container, Button, Typography } from '@mui/material';
 import ProductDetail from '../../components/product-detail';
-// const PRODUCT_ID = 'clul0aoyc000314pb4ejq9mav';
+import api from '../../services/api';
+import { useParams, useNavigate } from 'react-router-dom';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import Spinner from '../../components/spinner';
+import NotFoundPage from '../not-found';
 
-type SingleProductPageProps = {
-	// onPostDelete: (id: string) => void;
-	// onPostLike: ({ id, likes }: PostLikeParam) => Promise<Post>;
+interface IProps {
+	onProductLike: (productData: IProductLikeParams) => Promise<IProduct | undefined>;
 	currentUser: IUser | null;
-};
+}
 
-const SingleProductPage = ({ currentUser }: SingleProductPageProps) => {
-	console.log(currentUser);
-	const [product] = useState<IProduct | null>(null);
+const SingleProductPage = ({ currentUser, onProductLike }: IProps) => {
+	const [product, setProduct] = useState<IProduct | null>(null);
+	const [isError, setIsError] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	// function handleProductLike(dataProduct: PostLikeParam) {
-	// 	onPostLike(dataProduct).then((updateProduct) => {
-	// 		console.log('updateProduct', updateProduct);
-	// 		setPost(updateProduct);
-	// 	});
-	// }
+	const { id } = useParams();
+	const navigate = useNavigate();
+
+	function handleProductLike(productData: IProductLikeParams) {
+		onProductLike(productData)
+			.then((updatedProduct) => {
+				if (updatedProduct) {
+					setProduct(updatedProduct);
+				}
+			})
+			.catch((err) => console.error(err));
+	}
 
 	useEffect(() => {
-		// api.getPostById(POST_ID)
-		// 	.then((dataProduct) => setPost(dataProduct))
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
+		if (!id) {
+			return;
+		}
+
+		setIsLoading(true);
+		api.getProductById(id)
+			.then((dataProduct) => setProduct(dataProduct))
+			.catch((err) => {
+				console.error(err);
+				setIsError(true);
+			})
+			.finally(() => setIsLoading(false));
 	}, []);
+
+	if (isLoading) {
+		return <Spinner />;
+	}
+
+	if (isError) {
+		return <NotFoundPage />;
+	}
 
 	return (
 		<Container>
-			<Typography component='h1' variant='h4' textAlign='center' sx={{ mb: 5 }}>
-				Product Detail
-			</Typography>
-			{product && (
-				<ProductDetail
-					{...product}
-					// onPostDelete={onPostDelete}
-					// onPostLike={handlePostLike}
-					// currentUser={currentUser}
-				/>
-			)}
+			<Button
+				startIcon={<NavigateBeforeIcon sx={{ color: '#7B8E98' }} />}
+				sx={{ padding: '3px 0', mb: '4px' }}
+				onClick={() => navigate(-1)}>
+				<Typography variant='p2' sx={{ color: '#7B8E98' }}>
+					Назад
+				</Typography>
+			</Button>
+			{product && <ProductDetail {...product} onProductLike={handleProductLike} currentUser={currentUser} />}
 		</Container>
 	);
 };

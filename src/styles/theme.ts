@@ -129,8 +129,8 @@ theme = createTheme(theme, {
 			styleOverrides: {
 				root: {
 					padding: '10px 18px',
+					fontWeight: '700',
 					textTransform: 'none',
-					boxShadow: '0px 2px 16px 0px rgba(96, 97, 112, 0.16),0px 0px 1px 0px rgba(40, 41, 61, 0.02)',
 					color: theme.palette.text.primary,
 				},
 			},

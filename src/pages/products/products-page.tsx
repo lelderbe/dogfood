@@ -4,7 +4,7 @@ import Sort from '../../components/sort';
 
 type ProductsPageProps = {
 	products: IProduct[];
-	onProductLike: (productData: IProductLikeParams) => void;
+	onProductLike: (productData: IProductLikeParams) => Promise<IProduct | undefined>;
 	currentUser: IUser | null;
 };
 

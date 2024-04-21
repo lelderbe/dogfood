@@ -7,7 +7,7 @@ const PRODUCTS_PER_PAGE = 8;
 
 interface IProps {
 	products: IProduct[];
-	onProductLike: (productData: IProductLikeParams) => void;
+	onProductLike: (productData: IProductLikeParams) => Promise<IProduct | undefined>;
 	currentUser: IUser | null;
 }
 
@@ -36,12 +36,7 @@ function ProductsList({ products, onProductLike, currentUser }: IProps) {
 			<Grid container rowSpacing={{ xs: 5 }} columnSpacing={{ xs: 1, sm: 2 }} py='40px'>
 				{productsToShow.map((item) => {
 					return (
-						<ProductCard
-							key={item.id}
-							product={item}
-							onProductLike={onProductLike}
-							currentUser={currentUser}
-						/>
+						<ProductCard key={item.id} {...item} onProductLike={onProductLike} currentUser={currentUser} />
 					);
 				})}
 			</Grid>
