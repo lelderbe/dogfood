@@ -13,6 +13,8 @@ import api from '../services/api';
 import { Routes, Route } from 'react-router-dom';
 import { isLiked } from '../utils/utils';
 import FavoritesPage from '../pages/favorites';
+import { UserContext } from '../context/user-context';
+import { ProductsContext } from '../context/products-context';
 
 function App() {
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -21,8 +23,8 @@ function App() {
 	useEffect(() => {
 		api.getAllInfo()
 			.then(([productsData, userInfoData]) => {
-				setCurrentUser(userInfoData);
 				setProducts(productsData.products);
+				setCurrentUser(userInfoData);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -33,69 +35,44 @@ function App() {
 		try {
 			const isProductLiked = isLiked(productData.likes, currentUser?.id);
 			await api.changeLikeProductStatus(productData.id, isProductLiked);
-			const updateProduct = await api.getProductById(productData.id);
+			const updatedProduct = await api.getProductById(productData.id);
 			const newProducts = products.map((currentProduct) =>
-				currentProduct.id === updateProduct.id ? updateProduct : currentProduct
+				currentProduct.id === updatedProduct.id ? updatedProduct : currentProduct
 			);
 			setProducts(newProducts);
-			return updateProduct;
+			return updatedProduct;
 		} catch (err) {
 			console.error(err);
 		}
 	}
 
-	const favoriteProducts = products.filter((item) => item.likes?.some((like) => like.userId === currentUser?.id));
-
 	return (
-		<ThemeProvider theme={theme}>
-			<Box
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					minHeight: '100vh',
-				}}>
-				<CssBaseline />
-				<Header />
-				<Container component='main' disableGutters sx={{ padding: '20px 0', flex: '1' }}>
-					<Routes>
-						<Route path='/' element={<HomePage />} />
-						<Route path='/profile' element={<ProfilePage currentUser={currentUser} />} />
-						<Route
-							path='/favorites'
-							element={
-								<FavoritesPage
-									products={favoriteProducts}
-									currentUser={currentUser}
-									onProductLike={handleProductLike}
-								/>
-							}
-						/>
-						<Route
-							path='/products'
-							element={
-								<ProductsPage
-									products={products}
-									currentUser={currentUser}
-									onProductLike={handleProductLike}
-								/>
-							}
-						/>
-						<Route
-							path='/product/:id'
-							element={
-								<SingleProductPage
-									currentUser={currentUser}
-									onProductLike={handleProductLike}
-									// onPostDelete={handlePostDelete}
-								/>
-							}
-						/>
-						<Route path='*' element={<NotFoundPage />} />
-					</Routes>
-				</Container>
-				<Footer />
-			</Box>
-		</ThemeProvider>
+		<UserContext.Provider value={currentUser}>
+			<ProductsContext.Provider value={{ products, onProductLike: handleProductLike }}>
+				<ThemeProvider theme={theme}>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							minHeight: '100vh',
+						}}>
+						<CssBaseline />
+						<Header />
+						<Container component='main' disableGutters sx={{ padding: '20px 0', flex: '1' }}>
+							<Routes>
+								<Route path='/' element={<HomePage />} />
+								<Route path='/profile' element={<ProfilePage />} />
+								<Route path='/favorites' element={<FavoritesPage />} />
+								<Route path='/products' element={<ProductsPage />} />
+								<Route path='/product/:id' element={<SingleProductPage />} />
+								<Route path='*' element={<NotFoundPage />} />
+							</Routes>
+						</Container>
+						<Footer />
+					</Box>
+				</ThemeProvider>
+			</ProductsContext.Provider>
+		</UserContext.Provider>
 	);
 }
 

@@ -1,16 +1,16 @@
 import { Card, IconButton, Grid, CardMedia, Typography, Button, Link as LinkMui } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import noImageAvailable from './assets/no-image-available.png';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useContext } from 'react';
 import { isLiked } from '../../utils/utils';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/user-context';
+import { IProductsContext, ProductsContext } from '../../context/products-context';
 
-type TProps = {
-	onProductLike: (productData: IProductLikeParams) => Promise<IProduct | undefined>;
-	currentUser: IUser | null;
-} & IProduct;
+function ProductCard({ id, images, name, price, wight, likes }: IProduct) {
+	const currentUser = useContext(UserContext);
+	const { onProductLike } = useContext(ProductsContext) as IProductsContext;
 
-function ProductCard({ id, images, name, price, wight, likes, onProductLike, currentUser }: TProps) {
 	function handleLikeClick() {
 		if (likes) {
 			onProductLike({ id, likes });

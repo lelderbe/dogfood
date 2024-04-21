@@ -2,13 +2,16 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Box, Typography, Stack, CardMedia, Button } from '@mui/material';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import { isLiked } from '../../utils/utils';
+import { useContext } from 'react';
+import { UserContext } from '../../context/user-context';
 
 type TProps = {
 	onProductLike: (productData: IProductLikeParams) => void;
-	currentUser: IUser | null;
 } & IProduct;
 
-function ProductDetail({ id, name, images, price, likes, onProductLike, currentUser }: TProps) {
+function ProductDetail({ id, name, images, price, likes, onProductLike }: TProps) {
+	const currentUser = useContext(UserContext);
+
 	function handleLikeClick() {
 		if (likes) {
 			onProductLike({ id, likes });

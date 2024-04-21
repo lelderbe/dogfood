@@ -2,14 +2,12 @@ import { Typography } from '@mui/material';
 import ProductsList from '../../components/products-list';
 import Sort from '../../components/sort';
 import GoToBackButton from '../../components/go-to-back';
+import { useContext } from 'react';
+import { IProductsContext, ProductsContext } from '../../context/products-context';
 
-type ProductsPageProps = {
-	products: IProduct[];
-	onProductLike: (productData: IProductLikeParams) => Promise<IProduct | undefined>;
-	currentUser: IUser | null;
-};
+const ProductsPage = () => {
+	const { products } = useContext(ProductsContext) as IProductsContext;
 
-const ProductsPage = ({ products, onProductLike, currentUser }: ProductsPageProps) => {
 	return (
 		<>
 			<GoToBackButton text='Главная' />
@@ -24,7 +22,7 @@ const ProductsPage = ({ products, onProductLike, currentUser }: ProductsPageProp
 				найдено 7 товаров
 			</Typography>
 			<Sort />
-			<ProductsList products={products} onProductLike={onProductLike} currentUser={currentUser} />
+			{products && <ProductsList products={products} />}
 		</>
 	);
 };

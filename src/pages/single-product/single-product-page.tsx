@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Container } from '@mui/material';
 import ProductDetail from '../../components/product-detail';
 import api from '../../services/api';
@@ -6,18 +6,15 @@ import { useParams } from 'react-router-dom';
 import Spinner from '../../components/spinner';
 import NotFoundPage from '../not-found';
 import GoToBackButton from '../../components/go-to-back';
+import { IProductsContext, ProductsContext } from '../../context/products-context';
 
-interface IProps {
-	onProductLike: (productData: IProductLikeParams) => Promise<IProduct | undefined>;
-	currentUser: IUser | null;
-}
+const SingleProductPage = () => {
+	const { onProductLike } = useContext(ProductsContext) as IProductsContext;
+	const { id } = useParams();
 
-const SingleProductPage = ({ currentUser, onProductLike }: IProps) => {
 	const [product, setProduct] = useState<IProduct | null>(null);
 	const [isError, setIsError] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-
-	const { id } = useParams();
 
 	function handleProductLike(productData: IProductLikeParams) {
 		onProductLike(productData)
@@ -55,7 +52,7 @@ const SingleProductPage = ({ currentUser, onProductLike }: IProps) => {
 	return (
 		<Container>
 			<GoToBackButton />
-			{product && <ProductDetail {...product} onProductLike={handleProductLike} currentUser={currentUser} />}
+			{product && <ProductDetail {...product} onProductLike={handleProductLike} />}
 		</Container>
 	);
 };
