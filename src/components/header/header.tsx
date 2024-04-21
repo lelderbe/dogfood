@@ -18,11 +18,13 @@ function Header() {
 				</LinkMui>
 				<Search />
 				<Stack spacing='10px' direction='row' sx={{ color: '#263238' }}>
-					<IconButton aria-label='add to favorites'>
-						<Badge badgeContent={12} color='success'>
-							<FavoriteBorderIcon />
-						</Badge>
-					</IconButton>
+					<LinkMui component={Link} to={'/favorites'} state={{ isBack: true }} underline='none'>
+						<IconButton aria-label='favorites'>
+							<Badge badgeContent={12} color='success'>
+								<FavoriteBorderIcon />
+							</Badge>
+						</IconButton>
+					</LinkMui>
 					<IconButton aria-label='shop cart'>
 						<ShoppingBagOutlinedIcon />
 					</IconButton>

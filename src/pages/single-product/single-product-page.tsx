@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Container, Button, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import ProductDetail from '../../components/product-detail';
 import api from '../../services/api';
-import { useParams, useNavigate } from 'react-router-dom';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import { useParams } from 'react-router-dom';
 import Spinner from '../../components/spinner';
 import NotFoundPage from '../not-found';
+import GoToBackButton from '../../components/go-to-back';
 
 interface IProps {
 	onProductLike: (productData: IProductLikeParams) => Promise<IProduct | undefined>;
@@ -18,7 +18,6 @@ const SingleProductPage = ({ currentUser, onProductLike }: IProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const { id } = useParams();
-	const navigate = useNavigate();
 
 	function handleProductLike(productData: IProductLikeParams) {
 		onProductLike(productData)
@@ -43,7 +42,7 @@ const SingleProductPage = ({ currentUser, onProductLike }: IProps) => {
 				setIsError(true);
 			})
 			.finally(() => setIsLoading(false));
-	}, []);
+	}, [id]);
 
 	if (isLoading) {
 		return <Spinner />;
@@ -55,14 +54,7 @@ const SingleProductPage = ({ currentUser, onProductLike }: IProps) => {
 
 	return (
 		<Container>
-			<Button
-				startIcon={<NavigateBeforeIcon sx={{ color: '#7B8E98' }} />}
-				sx={{ padding: '3px 0', mb: '4px' }}
-				onClick={() => navigate(-1)}>
-				<Typography variant='p2' sx={{ color: '#7B8E98' }}>
-					Назад
-				</Typography>
-			</Button>
+			<GoToBackButton />
 			{product && <ProductDetail {...product} onProductLike={handleProductLike} currentUser={currentUser} />}
 		</Container>
 	);

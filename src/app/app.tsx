@@ -12,6 +12,7 @@ import SingleProductPage from '../pages/single-product';
 import api from '../services/api';
 import { Routes, Route } from 'react-router-dom';
 import { isLiked } from '../utils/utils';
+import FavoritesPage from '../pages/favorites';
 
 function App() {
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -43,6 +44,8 @@ function App() {
 		}
 	}
 
+	const favoriteProducts = products.filter((item) => item.likes?.some((like) => like.userId === currentUser?.id));
+
 	return (
 		<ThemeProvider theme={theme}>
 			<Box
@@ -57,6 +60,16 @@ function App() {
 					<Routes>
 						<Route path='/' element={<HomePage />} />
 						<Route path='/profile' element={<ProfilePage currentUser={currentUser} />} />
+						<Route
+							path='/favorites'
+							element={
+								<FavoritesPage
+									products={favoriteProducts}
+									currentUser={currentUser}
+									onProductLike={handleProductLike}
+								/>
+							}
+						/>
 						<Route
 							path='/products'
 							element={
