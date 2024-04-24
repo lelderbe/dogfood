@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import HomePage from '../pages/home/home-page';
-import { ThemeProvider } from '@mui/material/styles';
 import { Box, Container, CssBaseline } from '@mui/material';
-import theme from '../styles/theme';
 import ProductsPage from '../pages/products';
 import ProfilePage from '../pages/profile';
 import NotFoundPage from '../pages/not-found';
@@ -49,28 +47,26 @@ function App() {
 	return (
 		<UserContext.Provider value={currentUser}>
 			<ProductsContext.Provider value={{ products, onProductLike: handleProductLike }}>
-				<ThemeProvider theme={theme}>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							minHeight: '100vh',
-						}}>
-						<CssBaseline />
-						<Header />
-						<Container component='main' disableGutters sx={{ padding: '20px 0', flex: '1' }}>
-							<Routes>
-								<Route path='/' element={<HomePage />} />
-								<Route path='/profile' element={<ProfilePage />} />
-								<Route path='/favorites' element={<FavoritesPage />} />
-								<Route path='/products' element={<ProductsPage />} />
-								<Route path='/product/:id' element={<SingleProductPage />} />
-								<Route path='*' element={<NotFoundPage />} />
-							</Routes>
-						</Container>
-						<Footer />
-					</Box>
-				</ThemeProvider>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						minHeight: '100vh',
+					}}>
+					<CssBaseline />
+					<Header />
+					<Container component='main' disableGutters sx={{ padding: '20px 0', flex: '1' }}>
+						<Routes>
+							<Route path='/' element={<HomePage />} />
+							<Route path='/profile' element={<ProfilePage />} />
+							<Route path='/favorites' element={<FavoritesPage />} />
+							<Route path='/products' element={<ProductsPage />} />
+							<Route path='/product/:id' element={<SingleProductPage />} />
+							<Route path='*' element={<NotFoundPage />} />
+						</Routes>
+					</Container>
+					<Footer />
+				</Box>
 			</ProductsContext.Provider>
 		</UserContext.Provider>
 	);

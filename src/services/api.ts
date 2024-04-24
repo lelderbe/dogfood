@@ -10,8 +10,6 @@ type ProductListResponse = {
 	length: number;
 };
 
-// type ProductCreateDto = Pick<IProduct, 'name' | 'images' | 'tags' | 'price' | 'description'>;
-
 type UserUpdateDto = Partial<Omit<IUser, 'favoritesPost' | 'id'> & { password: string }>;
 
 type TProductLikeResponse = {
@@ -39,52 +37,37 @@ export class Api {
 			headers: { ...this.headers, ...options?.headers },
 		});
 
-		return await this.onResponse<T>(res);
+		return this.onResponse<T>(res);
 	}
 
 	async getAllInfo(): Promise<[ProductListResponse, IUser]> {
-		return await Promise.all([this.getProductsList(), this.getUserInfo()]);
+		return Promise.all([this.getProductsList(), this.getUserInfo()]);
 	}
 
 	async getUserInfo() {
-		return await this.request<IUser>('/users/me');
+		return this.request<IUser>('/users/me');
 	}
 
 	async getProductsList(searchQuery?: string) {
-		return await this.request<ProductListResponse>(`/products?${searchQuery}`);
+		return this.request<ProductListResponse>(`/products?${searchQuery}`);
 	}
 
-	// async getCommentsByPost(postID: string) {
-	// 	return await this.request<CommentPost>(`/comments/${postID}`);
-	// }
-
 	async setUserInfo(userData: UserUpdateDto) {
-		return await this.request<IUser>('/users/me/', {
+		return this.request<IUser>('/users/me/', {
 			method: 'PATCH',
 			body: JSON.stringify(userData),
 		});
 	}
 
 	async changeLikeProductStatus(productID: string, isProductLiked: boolean) {
-		return await this.request<TProductLikeResponse>(`/products/${productID}/likes`, {
+		return this.request<TProductLikeResponse>(`/products/${productID}/likes`, {
 			method: isProductLiked ? 'DELETE' : 'PUT',
 		});
 	}
 
 	async getProductById(productID: string) {
-		return await this.request<IProduct>(`/products/${productID}`);
+		return this.request<IProduct>(`/products/${productID}`);
 	}
-
-	// async deletePostById(postID: string) {
-	// 	return await this.request<Post>(`/posts/${postID}`, { method: 'DELETE' });
-	// }
-
-	// async addPost(postData: PostCreateDto) {
-	// 	return await this.request<Post>('/posts', {
-	// 		method: 'POST',
-	// 		body: JSON.stringify(postData),
-	// 	});
-	// }
 }
 
 const api = new Api({
