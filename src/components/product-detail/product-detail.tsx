@@ -1,15 +1,17 @@
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Box, Typography, Stack, CardMedia, Button } from '@mui/material';
+import { Box, Typography, Stack, CardMedia, Button, Link as LinkMui } from '@mui/material';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import { isLiked } from '../../utils/utils';
 import { useAppSelector } from '../../store/hooks';
 import { userSelectors } from '../../store/slices/user-slice';
+import Review from '../review';
+import { Link } from 'react-router-dom';
 
 type TProps = {
 	onProductLike: (productData: IProductLikeParams) => void;
 } & IProduct;
 
-function ProductDetail({ id, name, images, price, likes, onProductLike }: TProps) {
+function ProductDetail({ id, name, images, price, likes, onProductLike, reviews }: TProps) {
 	const currentUser = useAppSelector(userSelectors.currentUser);
 
 	function handleLikeClick() {
@@ -77,6 +79,19 @@ function ProductDetail({ id, name, images, price, likes, onProductLike }: TProps
 			<Typography variant='h2' mb='20px'>
 				Характеристики
 			</Typography>
+			<Typography variant='h2' mb='20px'>
+				Отзывы
+			</Typography>
+			<LinkMui component={Link} to={`/reviews/leave/${id}`} state={{ isBack: true }} underline='none'>
+				<Button variant='secondary' sx={{ mb: '20px' }}>
+					<Typography variant='p1' sx={{ fontWeight: '700' }}>
+						Написать отзыв
+					</Typography>
+				</Button>
+			</LinkMui>
+			{reviews?.map((item) => {
+				return <Review key={item.id} {...item} />;
+			})}
 		</Box>
 	);
 }

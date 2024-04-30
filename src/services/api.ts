@@ -21,6 +21,8 @@ type TProductLikeResponse = {
 	like: ILike;
 };
 
+export type ReviewCreateDto = Partial<Pick<IReview, 'rating' | 'text'>>;
+
 export class Api {
 	private baseUrl;
 	private headers;
@@ -72,6 +74,13 @@ export class Api {
 
 	async getProductById(productID: string) {
 		return this.request<IProduct>(`/products/${productID}`);
+	}
+
+	async createReview(productID: string, reviewCreateDto: ReviewCreateDto) {
+		return this.request<IReview>(`/reviews/leave/${productID}`, {
+			method: 'POST',
+			body: JSON.stringify(reviewCreateDto),
+		});
 	}
 }
 

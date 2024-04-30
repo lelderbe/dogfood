@@ -7,9 +7,9 @@ import NotFoundPage from '../not-found';
 import GoToBackButton from '../../components/go-to-back';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { productSelectors } from '../../store/slices/product-slice';
-import { changeLikeProduct } from '../../store/thunks/products';
 import { getProduct } from '../../store/thunks/product';
 import { RequestStatus } from '../../store/types';
+import { productsActions } from '../../store/slices/products-slice';
 
 const SingleProductPage = () => {
 	const { id } = useParams();
@@ -18,7 +18,7 @@ const SingleProductPage = () => {
 	const dispatch = useAppDispatch();
 
 	function handleProductLike(productData: IProductLikeParams) {
-		dispatch(changeLikeProduct(productData));
+		dispatch(productsActions.changeLikeProduct(productData));
 	}
 
 	useEffect(() => {

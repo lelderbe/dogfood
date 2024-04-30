@@ -1,4 +1,4 @@
-import { SearchParams } from '../../services/api';
+import { ReviewCreateDto, SearchParams } from '../../services/api';
 import { isLiked } from '../../utils/utils';
 import { createAppAsyncThunk, RootState } from '../types';
 import { getProduct } from './product';
@@ -19,5 +19,13 @@ export const changeLikeProduct = createAppAsyncThunk<IProduct, IProductLikeParam
 		await api.changeLikeProductStatus(productData.id, isProductLiked);
 		const updatedProduct = await dispatch(getProduct(productData.id)).unwrap();
 		return updatedProduct;
+	}
+);
+
+export const createProductReview = createAppAsyncThunk<IReview, ReviewCreateDto & { id: string }>(
+	'products/createProductReview',
+	async function (reviewCreateDto, { extra: api }) {
+		const review = await api.createReview(reviewCreateDto.id, reviewCreateDto);
+		return review;
 	}
 );

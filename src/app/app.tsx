@@ -13,6 +13,7 @@ import ProfileEditPage from '../pages/profile-edit';
 import { userActions } from '../store/slices/user-slice';
 import { useAppDispatch } from '../store/hooks';
 import { productsActions } from '../store/slices/products-slice';
+import ReviewPage from '../pages/review';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -41,6 +42,7 @@ function App() {
 					<Route path='/favorites' element={<FavoritesPage />} />
 					<Route path='/products' element={<ProductsPage />} />
 					<Route path='/product/:id' element={<SingleProductPage />} />
+					<Route path='/reviews/leave/:id' element={<ReviewPage />} />
 					<Route path='*' element={<NotFoundPage />} />
 				</Routes>
 			</Container>

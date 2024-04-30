@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { isActionPending, isActionRejected } from '../../utils/store';
 import { RequestStatus } from '../types';
-import { changeLikeProduct, getProducts } from '../thunks/products';
+import { changeLikeProduct, getProducts, createProductReview } from '../thunks/products';
 
 interface IProductsState {
 	products: IProduct[];
@@ -36,6 +36,15 @@ export const productsSlice = createSlice({
 				);
 				state.status = RequestStatus.SUCCESS;
 			})
+			.addCase(createProductReview.fulfilled, (state, action) => {
+				state.products = state.products.map((currentProduct) => {
+					if (currentProduct.id === action.payload.product.id) {
+						currentProduct.reviews?.push(action.payload);
+					}
+					return currentProduct;
+				});
+				state.status = RequestStatus.SUCCESS;
+			})
 			.addMatcher(isActionPending(productsSlice.name), (state) => {
 				state.status = RequestStatus.LOADING;
 			})
@@ -48,5 +57,5 @@ export const productsSlice = createSlice({
 	},
 });
 
-export const productsActions = { ...productsSlice.actions, getProducts };
+export const productsActions = { ...productsSlice.actions, getProducts, createProductReview, changeLikeProduct };
 export const productsSelectors = productsSlice.selectors;
