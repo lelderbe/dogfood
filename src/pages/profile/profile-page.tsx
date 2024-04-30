@@ -1,9 +1,10 @@
-import { Avatar, Button, Typography, Stack } from '@mui/material';
-import { useContext } from 'react';
-import { UserContext } from '../../context/user-context';
+import { Avatar, Button, Typography, Stack, Link as LinkMui } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../store/hooks';
+import { userSelectors } from '../../store/slices/user-slice';
 
 function ProfilePage() {
-	const currentUser = useContext(UserContext);
+	const currentUser = useAppSelector(userSelectors.currentUser);
 
 	return (
 		<>
@@ -19,9 +20,11 @@ function ProfilePage() {
 				{currentUser && currentUser.name}
 			</Typography>
 			<Stack>
-				<Button variant='secondary' sx={{ mb: '40px', alignSelf: 'flex-start' }}>
-					Изменить
-				</Button>
+				<LinkMui component={Link} to={'/profile/edit'} state={{ isBack: true }} underline='none'>
+					<Button variant='secondary' sx={{ mb: '40px', alignSelf: 'flex-start' }}>
+						Изменить
+					</Button>
+				</LinkMui>
 				<Button variant='secondary' sx={{ alignSelf: 'flex-start' }}>
 					Выйти
 				</Button>

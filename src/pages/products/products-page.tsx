@@ -2,11 +2,11 @@ import { Typography } from '@mui/material';
 import ProductsList from '../../components/products-list';
 import Sort from '../../components/sort';
 import GoToBackButton from '../../components/go-to-back';
-import { useContext } from 'react';
-import { IProductsContext, ProductsContext } from '../../context/products-context';
+import { useAppSelector } from '../../store/hooks';
+import { productsSelectors } from '../../store/slices/products-slice';
 
 const ProductsPage = () => {
-	const { products } = useContext(ProductsContext) as IProductsContext;
+	const products = useAppSelector(productsSelectors.products);
 
 	return (
 		<>

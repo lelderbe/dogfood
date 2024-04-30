@@ -1,29 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Container } from '@mui/material';
 import ProductDetail from '../../components/product-detail';
-import api from '../../services/api';
 import { useParams } from 'react-router-dom';
 import Spinner from '../../components/spinner';
 import NotFoundPage from '../not-found';
 import GoToBackButton from '../../components/go-to-back';
-import { IProductsContext, ProductsContext } from '../../context/products-context';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { productSelectors } from '../../store/slices/product-slice';
+import { changeLikeProduct } from '../../store/thunks/products';
+import { getProduct } from '../../store/thunks/product';
+import { RequestStatus } from '../../store/types';
 
 const SingleProductPage = () => {
-	const { onProductLike } = useContext(ProductsContext) as IProductsContext;
 	const { id } = useParams();
-
-	const [product, setProduct] = useState<IProduct | null>(null);
-	const [isError, setIsError] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const product = useAppSelector(productSelectors.product);
+	const status = useAppSelector(productSelectors.status);
+	const dispatch = useAppDispatch();
 
 	function handleProductLike(productData: IProductLikeParams) {
-		onProductLike(productData)
-			.then((updatedProduct) => {
-				if (updatedProduct) {
-					setProduct(updatedProduct);
-				}
-			})
-			.catch((err) => console.error(err));
+		dispatch(changeLikeProduct(productData));
 	}
 
 	useEffect(() => {
@@ -31,21 +26,14 @@ const SingleProductPage = () => {
 			return;
 		}
 
-		setIsLoading(true);
-		api.getProductById(id)
-			.then((dataProduct) => setProduct(dataProduct))
-			.catch((err) => {
-				console.error(err);
-				setIsError(true);
-			})
-			.finally(() => setIsLoading(false));
+		dispatch(getProduct(id));
 	}, [id]);
 
-	if (isLoading) {
+	if (status === RequestStatus.LOADING) {
 		return <Spinner />;
 	}
 
-	if (isError) {
+	if (status === RequestStatus.FAILED) {
 		return <NotFoundPage />;
 	}
 

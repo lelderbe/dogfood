@@ -10,7 +10,7 @@ type ProductListResponse = {
 	length: number;
 };
 
-type UserUpdateDto = Partial<Omit<IUser, 'favoritesPost' | 'id'> & { password: string }>;
+export type UserUpdateDto = Partial<Omit<IUser, 'favoritesPost' | 'id'> & { password: string }>;
 
 type TProductLikeResponse = {
 	message: string;
