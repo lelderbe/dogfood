@@ -12,6 +12,10 @@ type ProductListResponse = {
 
 export type UserUpdateDto = Partial<Omit<IUser, 'favoritesPost' | 'id'> & { password: string }>;
 
+export type SearchParams = {
+	searchTerm?: string;
+};
+
 type TProductLikeResponse = {
 	message: string;
 	like: ILike;
@@ -41,15 +45,16 @@ export class Api {
 	}
 
 	async getAllInfo(): Promise<[ProductListResponse, IUser]> {
-		return Promise.all([this.getProductsList(), this.getUserInfo()]);
+		return Promise.all([this.getProductsList({}), this.getUserInfo()]);
 	}
 
 	async getUserInfo() {
 		return this.request<IUser>('/users/me');
 	}
 
-	async getProductsList(searchQuery?: string) {
-		return this.request<ProductListResponse>(`/products?${searchQuery}`);
+	async getProductsList(searchQuery: SearchParams) {
+		const searchParams = new URLSearchParams(searchQuery);
+		return this.request<ProductListResponse>(`/products?${searchParams}`);
 	}
 
 	async setUserInfo(userData: UserUpdateDto) {

@@ -1,10 +1,11 @@
+import { SearchParams } from '../../services/api';
 import { isLiked } from '../../utils/utils';
 import { createAppAsyncThunk, RootState } from '../types';
 import { getProduct } from './product';
 
-export const getProducts = createAppAsyncThunk<IProduct[], { searchQuery?: string }>(
+export const getProducts = createAppAsyncThunk<IProduct[], SearchParams>(
 	'products/getProducts',
-	async ({ searchQuery }, { extra: api }) => {
+	async (searchQuery, { extra: api }) => {
 		const products = (await api.getProductsList(searchQuery)).products;
 		return products;
 	}
