@@ -14,6 +14,7 @@ import { userActions } from '../store/slices/user-slice';
 import { useAppDispatch } from '../store/hooks';
 import { productsActions } from '../store/slices/products-slice';
 import ReviewPage from '../pages/review';
+import { SignUpPage } from '../pages/signUp/signUpPage';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -43,6 +44,7 @@ function App() {
 					<Route path='/products' element={<ProductsPage />} />
 					<Route path='/product/:id' element={<SingleProductPage />} />
 					<Route path='/reviews/leave/:id' element={<ReviewPage />} />
+					<Route path='/signup' element={<SignUpPage />} />
 					<Route path='*' element={<NotFoundPage />} />
 				</Routes>
 			</Container>
