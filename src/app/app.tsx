@@ -10,19 +10,21 @@ import SingleProductPage from '../pages/single-product';
 import { Routes, Route } from 'react-router-dom';
 import FavoritesPage from '../pages/favorites';
 import ProfileEditPage from '../pages/profile-edit';
-import { userActions } from '../store/slices/user-slice';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { productsActions } from '../store/slices/products-slice';
 import ReviewPage from '../pages/review';
 import { SignUpPage } from '../pages/signUp/signUpPage';
+import { authSelectors } from '../store/slices/auth-slice';
 
 function App() {
 	const dispatch = useAppDispatch();
-	const { getCurrentUser } = userActions;
+	// const { getCurrentUser } = userActions;
 	const { getProducts } = productsActions;
+	const accessToken = useAppSelector(authSelectors.accessTokenSelector);
+	console.log('accessToken:', accessToken);
 
 	useEffect(() => {
-		dispatch(getCurrentUser());
+		// dispatch(getCurrentUser());
 		dispatch(getProducts({}));
 	}, []);
 

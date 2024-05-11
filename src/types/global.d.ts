@@ -1,6 +1,10 @@
 export {};
 
 declare global {
+	interface Token {
+		accessToken: string;
+	}
+
 	interface IProducts {
 		products: IProduct[];
 		length: number;

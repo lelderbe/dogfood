@@ -6,21 +6,24 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { signUpFormSchema } from './helpers/validator';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { toast } from 'react-toastify';
+import { useSignUpMutation } from '../../../store/api/authApi';
+import { useAppDispatch } from '../../../store/hooks';
+import { userActions } from '../../../store/slices/user-slice';
+import { authActions } from '../../../store/slices/auth-slice';
+import { getMessageFromError } from '../../../utils/errorUtils';
 // import { useNavigate } from 'react-router-dom';
-// import { getMessageFromError } from '../../../utils/errorUtils';
-// import { useSignUpMutation } from '../../../storage/api/authApi';
 // import { useDispatch } from 'react-redux';
 // import { setUser } from '../../../storage/slices/userSlice';
 // import { setAccessToken } from '../../../storage/slices/authSlice';
 // import { formHandler } from 'utils/forms';
 
 export const SignUpForm: FC = () => {
-	// const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	// navigate поможет сделать редирект в нужный момент
 	// const navigate = useNavigate();
 	// Из хука useSignUpMutation (был получен путем автогенерации)
 	// достаем функцию, которая будет (регистрировать пользователя) делать POST-запрос к нашем серверу)
-	// const [signUpRequestFn] = useSignUpMutation();
+	const [signUpRequestFn] = useSignUpMutation();
 	// инициализируем react-hook-form
 	const {
 		control,
@@ -40,10 +43,10 @@ export const SignUpForm: FC = () => {
 			// метод "unwrap" помогает убрать вспомогательные обертки
 			// RTK, которые обрабатывают ошибки. Теперь ошибки обрабатываем мы
 			// с помощью конструкции try...catch. В этом случае нам так удобней
-			// const response = await signUpRequestFn(values).unwrap();
+			const response = await signUpRequestFn(values).unwrap();
 
-			// dispatch(setUser(response.user));
-			// dispatch(setAccessToken({ accessToken: response.accessToken }));
+			dispatch(userActions.setUser(response.user));
+			dispatch(authActions.setAccessToken({ accessToken: response.accessToken }));
 
 			// Выводим уведомление, что пользователь успешно зарегался
 			// Есть куча библиотек для отображения "Тостеров". Мы используем
@@ -53,12 +56,7 @@ export const SignUpForm: FC = () => {
 		} catch (error) {
 			// Если произошла ошибка, то выводим уведомление
 			console.log({ error });
-			// toast.error(
-			// 	getMessageFromError(
-			// 		error,
-			// 		'Не известная ошибка при регистрации пользователя'
-			// 	)
-			// );
+			toast.error(getMessageFromError(error, 'Не известная ошибка при регистрации пользователя'));
 		}
 	};
 

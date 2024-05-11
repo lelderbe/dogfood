@@ -1,46 +1,50 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { isActionPending, isActionRejected } from '../../utils/store';
-import { RequestStatus } from '../types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { getCurrentUser, updateCurrentUser } from '../thunks/user';
 
-interface IUserState {
-	currentUser: IUser | null;
-	status: RequestStatus;
-}
-
-const initialState: IUserState = {
-	currentUser: null,
-	status: RequestStatus.IDLE,
-};
+const createInitialState = (): IUser => ({
+	id: '',
+	email: '',
+	name: '',
+	avatarPath: '',
+	about: '',
+	phone: '',
+	roles: [],
+	likes: [],
+});
 
 export const userSlice = createSlice({
 	name: 'user',
-	initialState,
+	initialState: createInitialState(),
 	reducers: {
-		setUser: (state, action) => {
-			state.currentUser = action.payload;
+		setUser: (state, action: PayloadAction<Partial<IUser>>) => {
+			return {
+				...state,
+				...action.payload,
+			};
+		},
+		clearUser() {
+			return createInitialState();
 		},
 	},
-	extraReducers: (builder) => {
-		builder
-			.addCase(getCurrentUser.fulfilled, (state, action) => {
-				state.currentUser = action.payload;
-				state.status = RequestStatus.SUCCESS;
-			})
-			.addCase(updateCurrentUser.fulfilled, (state, action) => {
-				state.currentUser = action.payload;
-				state.status = RequestStatus.SUCCESS;
-			})
-			.addMatcher(isActionPending(userSlice.name), (state) => {
-				state.status = RequestStatus.LOADING;
-			})
-			.addMatcher(isActionRejected(userSlice.name), (state) => {
-				state.status = RequestStatus.FAILED;
-			});
-	},
+	// extraReducers: (builder) => {
+	// 	builder
+	// 		.addCase(getCurrentUser.fulfilled, (state, action) => {
+	// 			state.currentUser = action.payload;
+	// 			state.status = RequestStatus.SUCCESS;
+	// 		})
+	// 		.addCase(updateCurrentUser.fulfilled, (state, action) => {
+	// 			state.currentUser = action.payload;
+	// 			state.status = RequestStatus.SUCCESS;
+	// 		})
+	// 		.addMatcher(isActionPending(userSlice.name), (state) => {
+	// 			state.status = RequestStatus.LOADING;
+	// 		})
+	// 		.addMatcher(isActionRejected(userSlice.name), (state) => {
+	// 			state.status = RequestStatus.FAILED;
+	// 		});
+	// },
 	selectors: {
-		currentUser: (state: IUserState) => state.currentUser,
-		userRequestStatus: (state: IUserState) => state.status,
+		currentUser: (state: IUser) => state,
 	},
 });
 

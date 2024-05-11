@@ -7,6 +7,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './styles/theme';
 import store from './store/store';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
@@ -16,6 +18,13 @@ root.render(
 			<BrowserRouter>
 				<Provider store={store}>
 					<App />
+					<ToastContainer
+						position='top-right'
+						autoClose={5000}
+						newestOnTop={true}
+						pauseOnFocusLoss={false}
+						theme='colored'
+					/>
 				</Provider>
 			</BrowserRouter>
 		</ThemeProvider>
