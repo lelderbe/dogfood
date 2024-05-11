@@ -26,9 +26,9 @@ function App() {
 			<Header />
 			<Container component='main' disableGutters sx={{ padding: '20px 0', flex: '1' }}>
 				<Routes>
-					{routes.map((item) => {
-						return <Route key={item.path} {...item} />;
-					})}
+					{routes.map((item) => (
+						<Route key={item.path} {...item} />
+					))}
 				</Routes>
 			</Container>
 			<Footer />
