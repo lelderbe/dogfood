@@ -5,8 +5,19 @@ import Search from '../search';
 import Logo from '../logo';
 import ProfileIcon from '../../icons/profile';
 import { Link } from 'react-router-dom';
+import { authActions, authSelectors } from '../../store/slices/auth-slice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function Header() {
+	const accessToken = useAppSelector(authSelectors.accessTokenSelector);
+	const dispatch = useAppDispatch();
+
+	function handleLogout() {
+		dispatch(authActions.clearToken());
+	}
+
 	return (
 		<AppBar position='static' elevation={0}>
 			<Container
@@ -33,6 +44,18 @@ function Header() {
 							<ProfileIcon />
 						</IconButton>
 					</LinkMui>
+					{!accessToken && (
+						<LinkMui component={Link} to={'/login'} underline='none'>
+							<IconButton aria-label='login'>
+								<LoginIcon />
+							</IconButton>
+						</LinkMui>
+					)}
+					{accessToken && (
+						<IconButton aria-label='logout' onClick={handleLogout}>
+							<LogoutIcon />
+						</IconButton>
+					)}
 				</Stack>
 			</Container>
 		</AppBar>

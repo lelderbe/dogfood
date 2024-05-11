@@ -11,16 +11,12 @@ import { useAppDispatch } from '../../../store/hooks';
 import { userActions } from '../../../store/slices/user-slice';
 import { authActions } from '../../../store/slices/auth-slice';
 import { getMessageFromError } from '../../../utils/errorUtils';
-// import { useNavigate } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
-// import { setUser } from '../../../storage/slices/userSlice';
-// import { setAccessToken } from '../../../storage/slices/authSlice';
+import { useNavigate, Link } from 'react-router-dom';
 // import { formHandler } from 'utils/forms';
 
 export const SignUpForm: FC = () => {
 	const dispatch = useAppDispatch();
-	// navigate поможет сделать редирект в нужный момент
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 	// Из хука useSignUpMutation (был получен путем автогенерации)
 	// достаем функцию, которая будет (регистрировать пользователя) делать POST-запрос к нашем серверу)
 	const [signUpRequestFn] = useSignUpMutation();
@@ -52,7 +48,7 @@ export const SignUpForm: FC = () => {
 			// Есть куча библиотек для отображения "Тостеров". Мы используем
 			// react-toastify — https://github.com/fkhadra/react-toastify#readme
 			toast.success('Вы успешно зарегистрированы!');
-			// navigate('/');
+			navigate('/login');
 		} catch (error) {
 			// Если произошла ошибка, то выводим уведомление
 			console.log({ error });
@@ -127,7 +123,7 @@ export const SignUpForm: FC = () => {
 						Зарегистрироваться
 					</LoadingButton>
 
-					<Button variant='secondary' fullWidth>
+					<Button component={Link} to='/login' variant='secondary' fullWidth>
 						Войти
 					</Button>
 				</Box>

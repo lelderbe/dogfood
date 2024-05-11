@@ -15,6 +15,7 @@ import { productsActions } from '../store/slices/products-slice';
 import ReviewPage from '../pages/review';
 import { SignUpPage } from '../pages/signUp/signUpPage';
 import { authSelectors } from '../store/slices/auth-slice';
+import { SignInPage } from '../pages/signIn/signInPage';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -47,6 +48,7 @@ function App() {
 					<Route path='/product/:id' element={<SingleProductPage />} />
 					<Route path='/reviews/leave/:id' element={<ReviewPage />} />
 					<Route path='/signup' element={<SignUpPage />} />
+					<Route path='/login' element={<SignInPage />} />
 					<Route path='*' element={<NotFoundPage />} />
 				</Routes>
 			</Container>

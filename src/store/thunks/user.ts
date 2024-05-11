@@ -2,6 +2,7 @@ import { UserUpdateDto } from '../../services/api';
 import { createAppAsyncThunk } from '../types';
 
 export const getCurrentUser = createAppAsyncThunk<IUser, void>('user/getCurrentUser', async (_, { extra: api }) => {
+	console.log('getCurrentUser Thunk');
 	return await api.getUserInfo();
 });
 
