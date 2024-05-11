@@ -12,15 +12,12 @@ import { userActions } from '../../../store/slices/user-slice';
 import { authActions } from '../../../store/slices/auth-slice';
 import { getMessageFromError } from '../../../utils/errorUtils';
 import { useNavigate, Link } from 'react-router-dom';
-// import { formHandler } from 'utils/forms';
+import { paths } from '../../../app/routes';
 
 export const SignUpForm: FC = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	// Из хука useSignUpMutation (был получен путем автогенерации)
-	// достаем функцию, которая будет (регистрировать пользователя) делать POST-запрос к нашем серверу)
 	const [signUpRequestFn] = useSignUpMutation();
-	// инициализируем react-hook-form
 	const {
 		control,
 		handleSubmit,
@@ -36,21 +33,13 @@ export const SignUpForm: FC = () => {
 	const submitHandler: SubmitHandler<SignUpFormValues> = async (values) => {
 		console.log('values:', values);
 		try {
-			// метод "unwrap" помогает убрать вспомогательные обертки
-			// RTK, которые обрабатывают ошибки. Теперь ошибки обрабатываем мы
-			// с помощью конструкции try...catch. В этом случае нам так удобней
 			const response = await signUpRequestFn(values).unwrap();
-
 			dispatch(userActions.setUser(response.user));
 			dispatch(authActions.setAccessToken({ accessToken: response.accessToken }));
 
-			// Выводим уведомление, что пользователь успешно зарегался
-			// Есть куча библиотек для отображения "Тостеров". Мы используем
-			// react-toastify — https://github.com/fkhadra/react-toastify#readme
 			toast.success('Вы успешно зарегистрированы!');
-			navigate('/login');
+			navigate(paths.login);
 		} catch (error) {
-			// Если произошла ошибка, то выводим уведомление
 			console.log({ error });
 			toast.error(getMessageFromError(error, 'Не известная ошибка при регистрации пользователя'));
 		}
@@ -113,8 +102,6 @@ export const SignUpForm: FC = () => {
 
 					<LoadingButton
 						type='submit'
-						// кнопка становится недоступной после первой валидации (если есть ошибки)
-						// или когда выполняется отправка (чтобы не дать пользователю отправить форму несколько раз)
 						disabled={isSubmitted && (!isValid || isSubmitting)}
 						loading={isSubmitting}
 						fullWidth
@@ -123,7 +110,7 @@ export const SignUpForm: FC = () => {
 						Зарегистрироваться
 					</LoadingButton>
 
-					<Button component={Link} to='/login' variant='secondary' fullWidth>
+					<Button component={Link} to={paths.login} variant='secondary' fullWidth>
 						Войти
 					</Button>
 				</Box>

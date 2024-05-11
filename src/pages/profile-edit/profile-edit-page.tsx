@@ -5,8 +5,10 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { userSelectors } from '../../store/slices/user-slice';
 import { updateCurrentUser } from '../../store/thunks/user';
 import { useNavigate } from 'react-router';
+import { withProtection } from '../../HOCs/withProtection';
+import { paths } from '../../app/routes';
 
-function ProfileEditPage() {
+const ProfileEditPage = withProtection(() => {
 	const dispatch = useAppDispatch();
 	const currentUser = useAppSelector(userSelectors.currentUser);
 	const [name, surname] = currentUser?.name.split(' ') || [];
@@ -26,7 +28,7 @@ function ProfileEditPage() {
 		e.preventDefault();
 		const profileData = { name: `${form.name} ${form.surname}`, phone: form.phone, email: form.email };
 		dispatch(updateCurrentUser(profileData));
-		navigate('/profile');
+		navigate(paths.profile);
 	}
 
 	return (
@@ -64,5 +66,6 @@ function ProfileEditPage() {
 			</Box>
 		</>
 	);
-}
+});
+
 export default ProfileEditPage;

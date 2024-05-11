@@ -1,10 +1,18 @@
 import { Avatar, Button, Typography, Stack, Link as LinkMui } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { userSelectors } from '../../store/slices/user-slice';
+import { withProtection } from '../../HOCs/withProtection';
+import { authActions } from '../../store/slices/auth-slice';
+import { paths } from '../../app/routes';
 
-function ProfilePage() {
+const ProfilePage = withProtection(() => {
+	const dispatch = useAppDispatch();
 	const currentUser = useAppSelector(userSelectors.currentUser);
+
+	function handleLogout() {
+		dispatch(authActions.clearToken());
+	}
 
 	return (
 		<>
@@ -19,17 +27,18 @@ function ProfilePage() {
 			<Typography variant='h3' sx={{ mb: '24px' }}>
 				{currentUser && currentUser.name}
 			</Typography>
-			<Stack>
-				<LinkMui component={Link} to={'/profile/edit'} state={{ isBack: true }} underline='none'>
-					<Button variant='secondary' sx={{ mb: '40px', alignSelf: 'flex-start' }}>
+			<Stack alignItems='flex-start'>
+				<LinkMui component={Link} to={paths.editProfile} state={{ isBack: true }} underline='none'>
+					<Button variant='secondary' sx={{ mb: '40px' }}>
 						Изменить
 					</Button>
 				</LinkMui>
-				<Button variant='secondary' sx={{ alignSelf: 'flex-start' }}>
+				<Button variant='secondary' sx={{ alignSelf: 'flex-start' }} onClick={handleLogout}>
 					Выйти
 				</Button>
 			</Stack>
 		</>
 	);
-}
+});
+
 export default ProfilePage;

@@ -3,6 +3,7 @@ import promo from './assets/promo.png';
 import s from './style.module.css';
 import { Link } from 'react-router-dom';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { paths } from '../../app/routes';
 
 function HomePage() {
 	return (
@@ -16,7 +17,7 @@ function HomePage() {
 					работы с доставкой по России и <br />
 					Миру
 				</Typography>
-				<LinkMui component={Link} to={'/products'} underline='none'>
+				<LinkMui component={Link} to={paths.products} underline='none'>
 					<Button
 						variant='secondary'
 						endIcon={<ArrowForwardIosIcon />}

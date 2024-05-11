@@ -11,12 +11,12 @@ import { useAppDispatch } from '../../../store/hooks';
 import { userActions } from '../../../store/slices/user-slice';
 import { authActions } from '../../../store/slices/auth-slice';
 import { getMessageFromError } from '../../../utils/errorUtils';
-import { useNavigate } from 'react-router-dom';
-// import { formHandler } from 'utils/forms';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { paths } from '../../../app/routes';
 
 export const SignInForm: FC = () => {
 	const dispatch = useAppDispatch();
+	const location = useLocation();
 	const navigate = useNavigate();
 	const [signInRequestFn] = useSignInMutation();
 	const {
@@ -36,8 +36,9 @@ export const SignInForm: FC = () => {
 			const response = await signInRequestFn(values).unwrap();
 			dispatch(userActions.setUser(response.user));
 			dispatch(authActions.setAccessToken({ accessToken: response.accessToken }));
-			navigate('/products');
+			navigate(location.state?.from || paths.products);
 		} catch (error) {
+			console.log({ error });
 			toast.error(getMessageFromError(error, 'Неизвестная ошибка при входе пользователя'));
 		}
 	};
@@ -108,7 +109,7 @@ export const SignInForm: FC = () => {
 						Войти
 					</LoadingButton>
 
-					<Button component={Link} to='/signup' variant='secondary' fullWidth>
+					<Button component={Link} to={paths.signUp} variant='secondary' fullWidth>
 						Регистрация
 					</Button>
 				</Box>

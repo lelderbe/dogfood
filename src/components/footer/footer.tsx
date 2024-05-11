@@ -6,6 +6,7 @@ import ViberIcon from '../../icons/viber';
 import InstagramIcon from '../../icons/instagram';
 import VkIcon from '../../icons/vk';
 import { Link } from 'react-router-dom';
+import { paths } from '../../app/routes';
 
 function Footer() {
 	return (
@@ -13,7 +14,7 @@ function Footer() {
 			<Container component='div' disableGutters sx={{ bgcolor: '#FFE44D', boxShadow: 'none', border: 'none' }}>
 				<Stack spacing='140px' direction='row'>
 					<Stack spacing='46px'>
-						<LinkMui component={Link} to={'/'} underline='none'>
+						<LinkMui component={Link} to={paths.home} underline='none'>
 							<Logo />
 						</LinkMui>
 						<Typography component='p' sx={{ fontSize: '9px', lineHeight: '12px', fontWeight: '400' }}>
@@ -21,7 +22,7 @@ function Footer() {
 						</Typography>
 					</Stack>
 					<Stack spacing='20px'>
-						<LinkMui component={Link} to={'/products'} color='inherit' underline='none'>
+						<LinkMui component={Link} to={paths.products} color='inherit' underline='none'>
 							<Typography sx={{ fontSize: '12px', lineHeight: '14px', fontWeight: '600' }}>
 								Каталог
 							</Typography>
