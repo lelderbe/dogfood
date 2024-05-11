@@ -1,7 +1,7 @@
 import { Avatar, Button, Typography, Stack, Link as LinkMui } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { userSelectors } from '../../store/slices/user-slice';
+import { userActions, userSelectors } from '../../store/slices/user-slice';
 import { withProtection } from '../../HOCs/withProtection';
 import { authActions } from '../../store/slices/auth-slice';
 import { paths } from '../../app/routes';
@@ -11,6 +11,7 @@ const ProfilePage = withProtection(() => {
 	const currentUser = useAppSelector(userSelectors.currentUser);
 
 	function handleLogout() {
+		dispatch(userActions.clearUser());
 		dispatch(authActions.clearToken());
 	}
 

@@ -31,7 +31,6 @@ export const SignUpForm: FC = () => {
 	});
 
 	const submitHandler: SubmitHandler<SignUpFormValues> = async (values) => {
-		console.log('values:', values);
 		try {
 			const response = await signUpRequestFn(values).unwrap();
 			dispatch(userActions.setUser(response.user));

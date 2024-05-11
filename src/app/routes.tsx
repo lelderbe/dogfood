@@ -15,7 +15,7 @@ export const paths = {
 	editProfile: '/profile/edit',
 	favorites: '/favorites',
 	products: '/products',
-	singleProduct: '/products/:id',
+	singleProduct: '/product/:id',
 	review: '/reviews/leave/:id',
 	signUp: '/signup',
 	login: '/login',
