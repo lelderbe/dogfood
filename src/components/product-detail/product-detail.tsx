@@ -6,12 +6,15 @@ import { useAppSelector } from '../../store/hooks';
 import { userSelectors } from '../../store/slices/user-slice';
 import Review from '../review';
 import { Link } from 'react-router-dom';
+import { withQuery } from '../../HOCs/withQuery';
 
-type TProps = {
+interface Props {
+	product: IProduct;
 	onProductLike: (productData: IProductLikeParams) => void;
-} & IProduct;
+}
 
-function ProductDetail({ id, name, images, price, likes, onProductLike, reviews }: TProps) {
+function ProductDetail({ product, onProductLike }: Props) {
+	const { id, name, images, price, likes, reviews } = product;
 	const currentUser = useAppSelector(userSelectors.currentUser);
 
 	function handleLikeClick() {
@@ -95,5 +98,7 @@ function ProductDetail({ id, name, images, price, likes, onProductLike, reviews 
 		</Box>
 	);
 }
+
+export const ProductDetailWithQuery = withQuery(ProductDetail);
 
 export default ProductDetail;

@@ -8,7 +8,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { toast } from 'react-toastify';
 import { getMessageFromError } from '../../../utils/errorUtils';
 import { useNavigate } from 'react-router-dom';
-import { useCreateReviewMutation } from '../../../store/api/reviewsApi';
+import { useCreateProductReviewMutation } from '../../../store/api/productsApi';
 
 interface Props {
 	productId: string;
@@ -16,7 +16,7 @@ interface Props {
 
 export const ReviewForm: FC<Props> = ({ productId }) => {
 	const navigate = useNavigate();
-	const [createReview] = useCreateReviewMutation();
+	const [createReview] = useCreateProductReviewMutation();
 	const {
 		control,
 		handleSubmit,

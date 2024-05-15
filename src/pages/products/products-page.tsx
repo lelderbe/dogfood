@@ -7,12 +7,7 @@ import { ProductsListWithQuery } from '../../components/products-list/products-l
 import { getMessageFromError } from '../../utils/errorUtils';
 
 const ProductsPage = withProtection(() => {
-	const { data, isLoading, isError, error, refetch } = useGetProductsQuery(
-		{},
-		{
-			refetchOnMountOrArgChange: 10,
-		}
-	);
+	const { data, isLoading, isError, error, refetch } = useGetProductsQuery({});
 
 	return (
 		<>

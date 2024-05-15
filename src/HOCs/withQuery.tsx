@@ -14,7 +14,7 @@ export const withQuery = <WrappedComponentProps extends object>(
 	const ReturnedComponent: FC<WrappedComponentProps & WithQueryProps> = (props) => {
 		const { isLoading, isError, queryErrorMsg, refetch, ...rest } = props;
 
-		// Ошибки часто возникают при сетевых взаимодействия,
+		// Ошибки часто возникают при сетевых взаимодействиях,
 		// нужно быть к ним готовым
 		if (isError) {
 			return (
