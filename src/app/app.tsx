@@ -1,20 +1,10 @@
-import { useEffect } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import { Box, Container, CssBaseline } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
-import { useAppDispatch } from '../store/hooks';
-import { productsActions } from '../store/slices/products-slice';
 import { routes } from './routes';
 
 function App() {
-	const dispatch = useAppDispatch();
-	const { getProducts } = productsActions;
-
-	useEffect(() => {
-		dispatch(getProducts({}));
-	}, []);
-
 	return (
 		<Box
 			sx={{

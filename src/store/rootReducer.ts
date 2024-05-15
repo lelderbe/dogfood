@@ -5,6 +5,8 @@ import { productSlice } from './slices/product-slice';
 import { authSlice } from './slices/auth-slice';
 import { authApi } from './api/authApi';
 import { usersApi } from './api/usersApi';
+import { productsApi } from './api/productsApi';
+import { reviewsApi } from './api/reviewsApi';
 
 export const rootReducer = combineReducers({
 	[userSlice.name]: userSlice.reducer,
@@ -13,4 +15,6 @@ export const rootReducer = combineReducers({
 	[authApi.reducerPath]: authApi.reducer,
 	[productSlice.name]: productSlice.reducer,
 	[productsSlice.name]: productsSlice.reducer,
+	[productsApi.reducerPath]: productsApi.reducer,
+	[reviewsApi.reducerPath]: reviewsApi.reducer,
 });

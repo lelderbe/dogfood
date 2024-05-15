@@ -1,13 +1,18 @@
 import { Typography } from '@mui/material';
-import ProductsList from '../../components/products-list';
 import Sort from '../../components/sort';
 import GoToBackButton from '../../components/go-to-back';
-import { useAppSelector } from '../../store/hooks';
-import { productsSelectors } from '../../store/slices/products-slice';
 import { withProtection } from '../../HOCs/withProtection';
+import { useGetProductsQuery } from '../../store/api/productsApi';
+import { ProductsListWithQuery } from '../../components/products-list/products-list';
+import { getMessageFromError } from '../../utils/errorUtils';
 
 const ProductsPage = withProtection(() => {
-	const products = useAppSelector(productsSelectors.products);
+	const { data, isLoading, isError, error, refetch } = useGetProductsQuery(
+		{},
+		{
+			refetchOnMountOrArgChange: 10,
+		}
+	);
 
 	return (
 		<>
@@ -23,7 +28,13 @@ const ProductsPage = withProtection(() => {
 				найдено 7 товаров
 			</Typography>
 			<Sort />
-			{products && <ProductsList products={products} />}
+			<ProductsListWithQuery
+				isLoading={isLoading}
+				isError={isError}
+				queryErrorMsg={getMessageFromError(error, 'Неизвестная ошибка, попробуйте ещё раз')}
+				refetch={refetch}
+				products={data?.products || []}
+			/>
 		</>
 	);
 });
