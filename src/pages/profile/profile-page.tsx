@@ -21,13 +21,14 @@ const ProfilePage = withProtection(() => {
 				Профиль
 			</Typography>
 			<Avatar
-				alt={currentUser?.name}
-				src={currentUser?.avatarPath ? currentUser.avatarPath : '/static/images/avatar/1.jpg'}
+				alt={currentUser.name}
+				src={currentUser.avatarPath ? currentUser.avatarPath : '/static/images/avatar/1.jpg'}
 				sx={{ width: 150, height: 150, mb: '20px' }}
 			/>
 			<Typography variant='h3' sx={{ mb: '24px' }}>
-				{currentUser && currentUser.name}
+				{currentUser.name}
 			</Typography>
+
 			<Stack alignItems='flex-start'>
 				<LinkMui component={Link} to={paths.editProfile} state={{ isBack: true }} underline='none'>
 					<Button variant='secondary' sx={{ mb: '40px' }}>

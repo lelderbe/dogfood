@@ -7,23 +7,21 @@ import { userSelectors } from '../../store/slices/user-slice';
 import Review from '../review';
 import { Link } from 'react-router-dom';
 import { withQuery } from '../../HOCs/withQuery';
+import { useSetProductLikeMutation } from '../../store/api/productsApi';
 
 interface Props {
 	product: IProduct;
-	onProductLike: (productData: IProductLikeParams) => void;
 }
 
-function ProductDetail({ product, onProductLike }: Props) {
+function ProductDetail({ product }: Props) {
 	const { id, name, images, price, likes, reviews } = product;
 	const currentUser = useAppSelector(userSelectors.currentUser);
-
-	function handleLikeClick() {
-		if (likes) {
-			onProductLike({ id, likes });
-		}
-	}
-
+	const [setProductLike] = useSetProductLikeMutation();
 	const isProductLiked = isLiked(likes, currentUser?.id);
+
+	async function handleLikeClick() {
+		setProductLike({ id, liked: isProductLiked });
+	}
 
 	return (
 		<Box>

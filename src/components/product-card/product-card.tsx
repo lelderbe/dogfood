@@ -4,21 +4,18 @@ import noImageAvailable from './assets/no-image-available.png';
 import { SyntheticEvent } from 'react';
 import { isLiked } from '../../utils/utils';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppSelector } from '../../store/hooks';
 import { userSelectors } from '../../store/slices/user-slice';
-import { changeLikeProduct } from '../../store/thunks/products';
+import { useSetProductLikeMutation } from '../../store/api/productsApi';
 
 function ProductCard({ id, images, name, price, wight, likes }: IProduct) {
 	const currentUser = useAppSelector(userSelectors.currentUser);
-	const dispatch = useAppDispatch();
-
-	function handleLikeClick() {
-		if (likes) {
-			dispatch(changeLikeProduct({ id, likes }));
-		}
-	}
-
+	const [setProductLike] = useSetProductLikeMutation();
 	const isProductLiked = isLiked(likes, currentUser?.id);
+
+	async function handleLikeClick() {
+		setProductLike({ id, liked: isProductLiked });
+	}
 
 	return (
 		<Grid item xs={6} sm={4} md={4} lg={3}>

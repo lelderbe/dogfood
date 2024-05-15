@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Box, Container, TextField, Typography, Button } from '@mui/material';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { SignUpFormValues } from './helpers/types';
@@ -13,10 +13,21 @@ import { authActions } from '../../../store/slices/auth-slice';
 import { getMessageFromError } from '../../../utils/errorUtils';
 import { useNavigate, Link } from 'react-router-dom';
 import { paths } from '../../../app/routes';
+import { useGetUserQuery } from '../../../store/api/productsApi';
 
 export const SignUpForm: FC = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const [registered, setRegistered] = useState<boolean>(false);
+	const { data: user } = useGetUserQuery(void 0, { skip: registered === false });
+
+	useEffect(() => {
+		if (user) {
+			dispatch(userActions.setUser(user));
+			navigate(paths.products);
+		}
+	}, [user]);
+
 	const [signUpRequestFn] = useSignUpMutation();
 	const {
 		control,
@@ -33,11 +44,9 @@ export const SignUpForm: FC = () => {
 	const submitHandler: SubmitHandler<SignUpFormValues> = async (values) => {
 		try {
 			const response = await signUpRequestFn(values).unwrap();
-			dispatch(userActions.setUser(response.user));
 			dispatch(authActions.setAccessToken({ accessToken: response.accessToken }));
-
+			setRegistered(true);
 			toast.success('Вы успешно зарегистрированы!');
-			navigate(paths.login);
 		} catch (error) {
 			console.log({ error });
 			toast.error(getMessageFromError(error, 'Не известная ошибка при регистрации пользователя'));

@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { getCurrentUser, updateCurrentUser } from '../thunks/user';
 
 const createInitialState = (): IUser => ({
 	id: '',
@@ -31,5 +30,5 @@ export const userSlice = createSlice({
 	},
 });
 
-export const userActions = { ...userSlice.actions, getCurrentUser, updateCurrentUser };
+export const userActions = userSlice.actions;
 export const userSelectors = userSlice.selectors;

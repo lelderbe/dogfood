@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Box, Container, TextField, Typography, Button, Link as LinkMui } from '@mui/material';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { SignInFormValues } from './helpers/types';
@@ -13,11 +13,22 @@ import { authActions } from '../../../store/slices/auth-slice';
 import { getMessageFromError } from '../../../utils/errorUtils';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { paths } from '../../../app/routes';
+import { useGetUserQuery } from '../../../store/api/productsApi';
 
 export const SignInForm: FC = () => {
 	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const navigate = useNavigate();
+	const [loggedIn, setLoggedIn] = useState<boolean>(false);
+	const { data: user } = useGetUserQuery(void 0, { skip: loggedIn === false });
+
+	useEffect(() => {
+		if (user) {
+			dispatch(userActions.setUser(user));
+			navigate(location.state?.from || paths.products);
+		}
+	}, [user]);
+
 	const [signInRequestFn] = useSignInMutation();
 	const {
 		control,
@@ -34,9 +45,9 @@ export const SignInForm: FC = () => {
 	const submitHandler: SubmitHandler<SignInFormValues> = async (values) => {
 		try {
 			const response = await signInRequestFn(values).unwrap();
-			dispatch(userActions.setUser(response.user));
 			dispatch(authActions.setAccessToken({ accessToken: response.accessToken }));
-			navigate(location.state?.from || paths.products);
+			setLoggedIn(true);
+			toast.success('Вы успешно вошли в систему');
 		} catch (error) {
 			console.log({ error });
 			toast.error(getMessageFromError(error, 'Неизвестная ошибка при входе пользователя'));

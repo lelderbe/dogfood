@@ -1,19 +1,18 @@
 import { Box, TextField } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
-import { useAppDispatch } from '../../store/hooks';
-import { getProducts } from '../../store/thunks/products';
-import { useNavigate } from 'react-router';
-import { paths } from '../../app/routes';
+// import { useAppDispatch } from '../../store/hooks';
+// import { useNavigate } from 'react-router';
+// import { paths } from '../../app/routes';
 
 function Search() {
 	const [search, setSearch] = useState('');
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
+	// const dispatch = useAppDispatch();
+	// const navigate = useNavigate();
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
 		setSearch(e.target.value);
-		dispatch(getProducts({ searchTerm: e.target.value }));
-		navigate(paths.products);
+		// dispatch(getProducts({ searchTerm: e.target.value }));
+		// navigate(paths.products);
 	}
 
 	return (
