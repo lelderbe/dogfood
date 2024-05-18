@@ -5,9 +5,12 @@ import { withProtection } from '../../HOCs/withProtection';
 import { useGetProductsQuery } from '../../store/api/productsApi';
 import { ProductsListWithQuery } from '../../components/products-list/products-list';
 import { getMessageFromError } from '../../utils/errorUtils';
+import { filtersSelectors } from '../../store/slices/filters-slice';
+import { useAppSelector } from '../../store/hooks';
 
 const ProductsPage = withProtection(() => {
-	const { data, isLoading, isError, error, refetch } = useGetProductsQuery({});
+	const filters = useAppSelector(filtersSelectors.filters);
+	const { data, isLoading, isError, error, refetch } = useGetProductsQuery(filters);
 
 	return (
 		<>

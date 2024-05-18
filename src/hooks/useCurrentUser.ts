@@ -12,4 +12,6 @@ export const useCurrentUser = () => {
 			dispatch(userActions.setUser(user));
 		}
 	}, [user]);
+
+	return user;
 };

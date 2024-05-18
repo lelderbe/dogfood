@@ -1,7 +1,10 @@
+// import { FetchBaseQueryError, createApi } from '@reduxjs/toolkit/query/react';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { customBaseQuery } from './config';
 import { ReviewFormValues } from '../../components/forms/review/helpers/types';
 import { ProfileFormValues } from '../../components/forms/profile/helpers/types';
+import { SearchFilter } from '../slices/filters-slice';
+// import { sleep } from '../../utils/utils';
 
 export type CreateReviewRequest = {
 	id: string;
@@ -31,13 +34,13 @@ export const productsApi = createApi({
 	baseQuery: customBaseQuery,
 	tagTypes: ['Products', 'Product', 'User'],
 	endpoints: (builder) => ({
-		getProducts: builder.query<IProducts, object>({
-			query: () => ({
+		getProducts: builder.query<IProducts, Partial<SearchFilter>>({
+			query: ({ searchTerm, page }) => ({
 				url: '/products',
 				params: {
-					searchTerm: '',
+					searchTerm: searchTerm || '',
 					perPage: 8,
-					page: 1,
+					page: page || 1,
 				},
 			}),
 			providesTags: [{ type: 'Products', id: 'LIST' }],
@@ -61,7 +64,7 @@ export const productsApi = createApi({
 				url: `/products/${request.id}/likes`,
 				method: request.liked ? 'DELETE' : 'PUT',
 			}),
-			invalidatesTags: (response) => ['Products', { type: 'Product', id: response?.like?.productId }],
+			invalidatesTags: (response) => ['User', 'Products', { type: 'Product', id: response?.like?.productId }],
 		}),
 		getUser: builder.query<IUser, void>({
 			query: () => ({
@@ -69,13 +72,26 @@ export const productsApi = createApi({
 			}),
 			providesTags: ['User'],
 		}),
+		// getUser: builder.query<IUser, void>({
+		// 	queryFn: async (_arg, _api, _extraOptions, fetchWithBQ) => {
+		// 		await sleep(1000);
+		// 		const response = await fetchWithBQ({
+		// 			url: '/users/me',
+		// 		});
+		// 		console.log({ response });
+		// 		return response.data
+		// 			? { data: response.data as IUser }
+		// 			: { error: response.error as FetchBaseQueryError };
+		// 	},
+		// 	providesTags: ['User'],
+		// }),
 		updateUser: builder.mutation<IUser, ProfileFormRequest>({
 			query: (profileFormData) => ({
 				url: '/users/me',
 				method: 'PATCH',
 				body: profileFormData,
 			}),
-			invalidatesTags: ['Product'],
+			invalidatesTags: ['Product', 'User'],
 		}),
 	}),
 });

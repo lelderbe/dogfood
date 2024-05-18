@@ -37,6 +37,7 @@ export const ProfileForm: FC = () => {
 		try {
 			const profileData = { name: `${values.name} ${values.surname}`, phone: values.phone, email: values.email };
 			const user = await updateUser(profileData).unwrap();
+			console.log('updated user:', user);
 			dispatch(userActions.setUser(user));
 			toast.success('Данные обновлены');
 			navigate(paths.profile);

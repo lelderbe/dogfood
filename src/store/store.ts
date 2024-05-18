@@ -9,7 +9,7 @@ import { productsApi } from './api/productsApi';
 const persistConfig = {
 	key: 'root',
 	storage,
-	version: 2,
+	version: 3,
 	// сетевые данные в localStorage не сохраняем
 	blacklist: [authApi.reducerPath, productsApi.reducerPath],
 };
