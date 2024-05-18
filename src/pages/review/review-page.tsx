@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import GoToBackButton from '../../components/go-to-back';
 import { withProtection } from '../../HOCs/withProtection';
 import { ReviewForm } from '../../components/forms';
-import { useGetProductByIdQuery } from '../../store/api/productsApi';
+import { useGetProductByIdQuery } from '../../store/api/api';
 
 const ReviewPage = withProtection(() => {
 	const { id } = useParams();

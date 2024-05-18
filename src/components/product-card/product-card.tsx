@@ -4,14 +4,12 @@ import noImageAvailable from './assets/no-image-available.png';
 import { SyntheticEvent } from 'react';
 import { isLiked } from '../../utils/utils';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
-import { userSelectors } from '../../store/slices/user-slice';
-import { useSetProductLikeMutation } from '../../store/api/productsApi';
+import { useGetUserQuery, useSetProductLikeMutation } from '../../store/api/api';
 
-function ProductCard({ id, images, name, price, wight, likes }: IProduct) {
-	const currentUser = useAppSelector(userSelectors.currentUser);
+function ProductCard({ id, images, name, price, wight }: IProduct) {
+	const { data: currentUser } = useGetUserQuery();
 	const [setProductLike] = useSetProductLikeMutation();
-	const isProductLiked = isLiked(likes, currentUser?.id);
+	const isProductLiked = isLiked(currentUser?.likes, id);
 
 	async function handleLikeClick() {
 		setProductLike({ id, liked: isProductLiked });
@@ -37,7 +35,11 @@ function ProductCard({ id, images, name, price, wight, likes }: IProduct) {
 				<Typography component='p' variant='h6' sx={{ fontWeight: 800, mb: '6px' }}>
 					{price} ₽
 				</Typography>
-				<Typography component='p' variant='caption' color='text.secondary' sx={{ mb: '2px', lineHeight: 24 }}>
+				<Typography
+					component='p'
+					variant='caption'
+					color='text.secondary'
+					sx={{ mb: '2px', lineHeight: '24px' }}>
 					{wight}
 				</Typography>
 				<Typography

@@ -1,5 +1,8 @@
-export const isLiked = (likes: ILikeUser[] | undefined, userId: string | undefined) =>
+export const isLikedByUser = (likes: ILikeUser[] | undefined, userId: string | undefined) =>
 	likes?.some((like) => like.userId === userId) || false;
+
+export const isLiked = (likes: ILikeUser[] | undefined, productId: string | undefined) =>
+	likes?.some((like) => like.productId === productId) || false;
 
 export function getLocaleDate(date: string) {
 	return new Date(date).toLocaleDateString('ru-RU', {

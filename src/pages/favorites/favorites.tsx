@@ -1,18 +1,13 @@
 import { Typography } from '@mui/material';
 import GoToBackButton from '../../components/go-to-back';
-import { isLiked } from '../../utils/utils';
-import { useAppSelector } from '../../store/hooks';
-import { userSelectors } from '../../store/slices/user-slice';
 import { withProtection } from '../../HOCs/withProtection';
-import { useGetProductsQuery } from '../../store/api/productsApi';
+import { useGetUserQuery } from '../../store/api/api';
 import { ProductsListWithQuery } from '../../components/products-list/products-list';
 import { getMessageFromError } from '../../utils/errorUtils';
 
 const FavoritesPage = withProtection(() => {
-	const currentUser = useAppSelector(userSelectors.currentUser);
-	const { data, isLoading, isError, error, refetch } = useGetProductsQuery({});
-
-	const favoriteProducts = data?.products?.filter((item) => isLiked(item.likes, currentUser?.id)) || [];
+	const { data: currentUser, isLoading, isError, refetch, error } = useGetUserQuery();
+	const favoriteProducts = currentUser?.likes?.map((item) => item.product).filter(Boolean) || [];
 
 	return (
 		<>
@@ -25,7 +20,7 @@ const FavoritesPage = withProtection(() => {
 				isError={isError}
 				queryErrorMsg={getMessageFromError(error, 'Неизвестная ошибка, попробуйте ещё раз')}
 				refetch={refetch}
-				products={favoriteProducts}
+				products={favoriteProducts as IProduct[]}
 			/>
 		</>
 	);

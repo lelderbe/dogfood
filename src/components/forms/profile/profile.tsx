@@ -8,16 +8,13 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { toast } from 'react-toastify';
 import { getMessageFromError } from '../../../utils/errorUtils';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { userActions, userSelectors } from '../../../store/slices/user-slice';
 import { paths } from '../../../app/routes';
-import { useUpdateUserMutation } from '../../../store/api/productsApi';
+import { useGetUserQuery, useUpdateUserMutation } from '../../../store/api/api';
 
 export const ProfileForm: FC = () => {
-	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const user = useAppSelector(userSelectors.currentUser);
-	const [name, surname] = user.name.split(' ') || [];
+	const { data: user } = useGetUserQuery();
+	const [name, surname] = user?.name?.split(' ') || [];
 	const [updateUser] = useUpdateUserMutation();
 	const {
 		control,
@@ -27,8 +24,8 @@ export const ProfileForm: FC = () => {
 		defaultValues: {
 			name: name || '',
 			surname: surname || '',
-			phone: user.phone || '',
-			email: user.email || '',
+			phone: user?.phone || '',
+			email: user?.email || '',
 		},
 		resolver: yupResolver(profileFormSchema),
 	});
@@ -36,19 +33,16 @@ export const ProfileForm: FC = () => {
 	const submitHandler: SubmitHandler<ProfileFormValues> = async (values) => {
 		try {
 			const profileData = { name: `${values.name} ${values.surname}`, phone: values.phone, email: values.email };
-			const user = await updateUser(profileData).unwrap();
-			console.log('updated user:', user);
-			dispatch(userActions.setUser(user));
+			await updateUser(profileData).unwrap();
 			toast.success('Данные обновлены');
 			navigate(paths.profile);
 		} catch (error) {
-			console.log({ error });
 			toast.error(getMessageFromError(error, 'Неизвестная ошибка при обновлении профиля'));
 		}
 	};
 
 	return (
-		<Box component='form' onSubmit={handleSubmit(submitHandler)} noValidate>
+		<Box component='form' noValidate onSubmit={handleSubmit(submitHandler)}>
 			<Stack sx={{ mb: '24px' }} gap='12px'>
 				<Stack direction='row' gap='12px'>
 					<FormControl variant='standard'>

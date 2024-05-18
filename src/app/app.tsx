@@ -3,11 +3,8 @@ import Footer from '../components/footer';
 import { Box, Container, CssBaseline } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
 import { routes } from './routes';
-import { useCurrentUser } from '../hooks/useCurrentUser';
 
 function App() {
-	useCurrentUser();
-
 	return (
 		<Box
 			sx={{

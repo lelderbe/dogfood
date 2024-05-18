@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './rootReducer';
-import { authApi } from './api/authApi';
+// import { authApi } from './api/authApi';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import { productsApi } from './api/productsApi';
+import { api } from './api/api';
+// import { productsApi } from './api/api';
 
 // За докой по redux-persist идем на https://github.com/rt2zz/redux-persist
 const persistConfig = {
@@ -11,7 +12,8 @@ const persistConfig = {
 	storage,
 	version: 3,
 	// сетевые данные в localStorage не сохраняем
-	blacklist: [authApi.reducerPath, productsApi.reducerPath],
+	// blacklist: [authApi.reducerPath, productsApi.reducerPath],
+	blacklist: [api.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -24,7 +26,7 @@ const store = configureStore({
 			serializableCheck: {
 				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
 			},
-		}).concat([authApi.middleware, productsApi.middleware]),
+		}).concat([api.middleware]),
 });
 
 export const persistor = persistStore(store);

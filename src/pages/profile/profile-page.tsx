@@ -1,23 +1,19 @@
 import { Avatar, Button, Typography, Stack, Link as LinkMui } from '@mui/material';
 import { Link } from 'react-router-dom';
-// import { useAppDispatch, useAppSelector } from '../../store/hooks';
-// import { userActions, userSelectors } from '../../store/slices/user-slice';
 import { useAppDispatch } from '../../store/hooks';
-import { userActions } from '../../store/slices/user-slice';
 import { withProtection } from '../../HOCs/withProtection';
 import { authActions } from '../../store/slices/auth-slice';
 import { paths } from '../../app/routes';
-import { useGetUserQuery } from '../../store/api/productsApi';
+import { useGetUserQuery, useRefetchUserMutation } from '../../store/api/api';
 
 const ProfilePage = withProtection(() => {
 	const dispatch = useAppDispatch();
-	// const currentUser = useAppSelector(userSelectors.currentUser);
 	const { data: currentUser } = useGetUserQuery();
-	console.log('ProfilePage:', currentUser);
+	const [refetchUser] = useRefetchUserMutation();
 
 	function handleLogout() {
-		dispatch(userActions.clearUser());
 		dispatch(authActions.clearToken());
+		refetchUser();
 	}
 
 	return (

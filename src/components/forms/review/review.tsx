@@ -8,7 +8,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { toast } from 'react-toastify';
 import { getMessageFromError } from '../../../utils/errorUtils';
 import { useNavigate } from 'react-router-dom';
-import { useCreateProductReviewMutation } from '../../../store/api/productsApi';
+import { useCreateProductReviewMutation } from '../../../store/api/api';
 
 interface Props {
 	productId: string;

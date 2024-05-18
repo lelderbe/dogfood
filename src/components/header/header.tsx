@@ -6,11 +6,10 @@ import Logo from '../logo';
 import ProfileIcon from '../../icons/profile';
 import { Link } from 'react-router-dom';
 import { paths } from '../../app/routes';
-import { useGetUserQuery } from '../../store/api/productsApi';
+import { useGetUserQuery } from '../../store/api/api';
 
 function Header() {
-	const { data: user } = useGetUserQuery();
-	console.log('Header:', user);
+	const { data: currentUser } = useGetUserQuery();
 
 	return (
 		<AppBar position='static' elevation={0}>
@@ -25,12 +24,9 @@ function Header() {
 				<Stack spacing='10px' direction='row' sx={{ color: '#263238' }}>
 					<LinkMui component={Link} to={paths.favorites} state={{ isBack: true }} underline='none'>
 						<IconButton aria-label='favorites'>
-							{user?.likes?.length !== 0 && (
-								<Badge badgeContent={user?.likes?.length || ''} color='success'>
-									<FavoriteBorderIcon />
-								</Badge>
-							)}
-							{user?.likes?.length === 0 && <FavoriteBorderIcon />}
+							<Badge badgeContent={currentUser?.likes?.length} color='success'>
+								<FavoriteBorderIcon />
+							</Badge>
 						</IconButton>
 					</LinkMui>
 					<IconButton aria-label='shop cart'>

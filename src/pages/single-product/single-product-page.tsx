@@ -2,7 +2,7 @@ import { Container } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import GoToBackButton from '../../components/go-to-back';
 import { withProtection } from '../../HOCs/withProtection';
-import { useGetProductByIdQuery } from '../../store/api/productsApi';
+import { useGetProductByIdQuery } from '../../store/api/api';
 import { getMessageFromError } from '../../utils/errorUtils';
 import { ProductDetailWithQuery } from '../../components/product-detail/product-detail';
 
