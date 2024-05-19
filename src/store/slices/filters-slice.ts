@@ -23,6 +23,9 @@ export const filtersSlice = createSlice({
 		clearFilter() {
 			return createInitialState();
 		},
+		nextPage(state) {
+			state.page++;
+		},
 	},
 	selectors: {
 		filters: (state) => state,

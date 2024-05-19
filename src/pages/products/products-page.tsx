@@ -15,13 +15,13 @@ const ProductsPage = withProtection(() => {
 	const filters = useAppSelector(filtersSelectors.filters);
 	const { data, isLoading, isError, error, refetch, isFetching } = useGetProductsQuery(filters);
 
-	const isEndOfList = !data || data.length === 0 || data.length <= data.products.length;
+	const isEndOfList = data && data.products.length >= data.length;
 
 	const loadMoreAction = useCallback(() => {
 		if (!isEndOfList) {
-			dispatch(filtersActions.setFilter({ page: filters.page + 1 }));
+			dispatch(filtersActions.nextPage());
 		}
-	}, [isEndOfList, filters.page]);
+	}, [isEndOfList]);
 
 	return (
 		<>
@@ -46,7 +46,9 @@ const ProductsPage = withProtection(() => {
 				refetch={refetch}
 				products={data?.products || []}
 			/>
-			{data?.products && <LoadMore action={loadMoreAction} isLoading={isFetching} isEndOfList={isEndOfList} />}
+			{!!data?.products?.length && (
+				<LoadMore action={loadMoreAction} isLoading={isFetching} isEndOfList={isEndOfList} />
+			)}
 		</>
 	);
 });
