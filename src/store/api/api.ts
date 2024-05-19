@@ -2,7 +2,6 @@ import { FetchBaseQueryError, createApi } from '@reduxjs/toolkit/query/react';
 import { customBaseQuery } from './config';
 import { ReviewFormValues } from '../../components/forms/review/helpers/types';
 import { ProfileFormValues } from '../../components/forms/profile/helpers/types';
-import { SearchFilter } from '../slices/filters-slice';
 import { SignInFormValues } from '../../components/forms/signIn/helpers/types';
 import { SignUpFormValues } from '../../components/forms/signUp/helpers/types';
 import { authActions } from '../slices/auth-slice';
@@ -36,6 +35,11 @@ type SetProductLikeResponse = {
 type SetProductLikeRequest = {
 	id: string;
 	liked: boolean;
+};
+
+type SearchFilterRequest = {
+	searchTerm: string;
+	page: number;
 };
 
 const defaultUser = {
@@ -86,13 +90,13 @@ export const api = createApi({
 			},
 			invalidatesTags: ['User'],
 		}),
-		getProducts: builder.query<IProducts, Partial<SearchFilter>>({
+		getProducts: builder.query<IProducts, SearchFilterRequest>({
 			query: ({ searchTerm, page }) => ({
 				url: '/products',
 				params: {
-					searchTerm: searchTerm || '',
+					searchTerm,
 					perPage: 8,
-					page: page || 1,
+					page,
 				},
 			}),
 			serializeQueryArgs: ({ queryArgs: { searchTerm }, endpointName }) => `${endpointName}${searchTerm}`,

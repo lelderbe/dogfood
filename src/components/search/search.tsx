@@ -11,7 +11,7 @@ function Search() {
 	const debouncedValue = useDebounce(search, 300);
 
 	useEffect(() => {
-		dispatch(filtersActions.setFilter({ searchTerm: debouncedValue, page: 1 }));
+		dispatch(filtersActions.setFilter({ searchTerm: debouncedValue }));
 	}, [debouncedValue]);
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {

@@ -2,12 +2,10 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface SearchFilter {
 	searchTerm: string;
-	page: number;
 }
 
 const createInitialState = (): SearchFilter => ({
 	searchTerm: '',
-	page: 1,
 });
 
 export const filtersSlice = createSlice({
@@ -22,9 +20,6 @@ export const filtersSlice = createSlice({
 		},
 		clearFilter() {
 			return createInitialState();
-		},
-		nextPage(state) {
-			state.page++;
 		},
 	},
 	selectors: {

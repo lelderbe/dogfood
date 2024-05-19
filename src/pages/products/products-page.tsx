@@ -5,21 +5,21 @@ import { withProtection } from '../../HOCs/withProtection';
 import { useGetProductsQuery } from '../../store/api/api';
 import { ProductsListWithQuery } from '../../components/products-list/products-list';
 import { getMessageFromError } from '../../utils/errorUtils';
-import { filtersActions, filtersSelectors } from '../../store/slices/filters-slice';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { filtersSelectors } from '../../store/slices/filters-slice';
+import { useAppSelector } from '../../store/hooks';
 import { LoadMore } from '../../components/load-more/load-more';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 const ProductsPage = withProtection(() => {
-	const dispatch = useAppDispatch();
 	const filters = useAppSelector(filtersSelectors.filters);
-	const { data, isLoading, isError, error, refetch, isFetching } = useGetProductsQuery(filters);
+	const [page, setPage] = useState<number>(1);
+	const { data, isLoading, isError, error, refetch, isFetching } = useGetProductsQuery({ ...filters, page });
 
 	const isEndOfList = data && data.products.length >= data.length;
 
 	const loadMoreAction = useCallback(() => {
 		if (!isEndOfList) {
-			dispatch(filtersActions.nextPage());
+			setPage((prev) => prev + 1);
 		}
 	}, [isEndOfList]);
 
