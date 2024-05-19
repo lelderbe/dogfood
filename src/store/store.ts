@@ -1,19 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './rootReducer';
-// import { authApi } from './api/authApi';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import { api } from './api/api';
-// import { productsApi } from './api/api';
+import { filtersSlice } from './slices/filters-slice';
 
 // За докой по redux-persist идем на https://github.com/rt2zz/redux-persist
 const persistConfig = {
 	key: 'root',
 	storage,
-	version: 3,
+	version: 4,
 	// сетевые данные в localStorage не сохраняем
-	// blacklist: [authApi.reducerPath, productsApi.reducerPath],
-	blacklist: [api.reducerPath],
+	blacklist: [api.reducerPath, filtersSlice.name],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

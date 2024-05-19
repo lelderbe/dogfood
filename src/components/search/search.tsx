@@ -4,20 +4,14 @@ import { useSearch } from '../../hooks/useSearch';
 import { useAppDispatch } from '../../store/hooks';
 import { filtersActions } from '../../store/slices/filters-slice';
 import { useDebounce } from '../../hooks/useDebounce';
-import { useNavigate } from 'react-router';
-import { paths } from '../../app/routes';
 
 function Search() {
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 	const [search, setSearch] = useSearch();
 	const debouncedValue = useDebounce(search, 300);
 
 	useEffect(() => {
-		dispatch(filtersActions.setFilter({ searchTerm: debouncedValue }));
-		if (debouncedValue) {
-			navigate(paths.products);
-		}
+		dispatch(filtersActions.setFilter({ searchTerm: debouncedValue, page: 1 }));
 	}, [debouncedValue]);
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {

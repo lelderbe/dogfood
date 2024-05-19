@@ -5,12 +5,23 @@ import { withProtection } from '../../HOCs/withProtection';
 import { useGetProductsQuery } from '../../store/api/api';
 import { ProductsListWithQuery } from '../../components/products-list/products-list';
 import { getMessageFromError } from '../../utils/errorUtils';
-import { filtersSelectors } from '../../store/slices/filters-slice';
-import { useAppSelector } from '../../store/hooks';
+import { filtersActions, filtersSelectors } from '../../store/slices/filters-slice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { LoadMore } from '../../components/load-more/load-more';
+import { useCallback } from 'react';
 
 const ProductsPage = withProtection(() => {
+	const dispatch = useAppDispatch();
 	const filters = useAppSelector(filtersSelectors.filters);
-	const { data, isLoading, isError, error, refetch } = useGetProductsQuery(filters);
+	const { data, isLoading, isError, error, refetch, isFetching } = useGetProductsQuery(filters);
+
+	const isEndOfList = !data || data.length === 0 || data.length <= data.products.length;
+
+	const loadMoreAction = useCallback(() => {
+		if (!isEndOfList) {
+			dispatch(filtersActions.setFilter({ page: filters.page + 1 }));
+		}
+	}, [isEndOfList, filters.page]);
 
 	return (
 		<>
@@ -24,7 +35,7 @@ const ProductsPage = withProtection(() => {
 					<Typography component='span' sx={{ fontSize: '28px', lineHeight: '32px', fontWeight: '800' }}>
 						{filters.searchTerm}
 					</Typography>{' '}
-					найдено {data?.products?.length || 0} товаров
+					найдено {data?.length || 0} товаров
 				</Typography>
 			)}
 			<Sort />
@@ -35,6 +46,7 @@ const ProductsPage = withProtection(() => {
 				refetch={refetch}
 				products={data?.products || []}
 			/>
+			{data?.products && <LoadMore action={loadMoreAction} isLoading={isFetching} isEndOfList={isEndOfList} />}
 		</>
 	);
 });

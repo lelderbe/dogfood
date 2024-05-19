@@ -13,12 +13,9 @@ type SignUpResponse = {
 	accessToken: Token['accessToken'];
 };
 
-type SignInResponse = {
-	user: Pick<IUser, 'id' | 'email'>;
-	accessToken: Token['accessToken'];
-};
+type SignInResponse = SignUpResponse;
 
-export type CreateReviewRequest = {
+type CreateReviewRequest = {
 	id: string;
 	values: ReviewFormValues;
 };
@@ -98,6 +95,15 @@ export const api = createApi({
 					page: page || 1,
 				},
 			}),
+			serializeQueryArgs: ({ queryArgs: { searchTerm }, endpointName }) => `${endpointName}${searchTerm}`,
+			forceRefetch: ({ currentArg, previousArg }) => currentArg?.page !== previousArg?.page,
+			merge: (currentCache, responseData, { arg: { page } }) => {
+				if (page === 1) {
+					currentCache = responseData;
+					return;
+				}
+				currentCache.products.push(...responseData.products);
+			},
 			providesTags: [{ type: 'Products', id: 'LIST' }],
 		}),
 		getProductById: builder.query<IProduct, IProduct['id']>({
@@ -119,10 +125,11 @@ export const api = createApi({
 				url: `/products/${request.id}/likes`,
 				method: request.liked ? 'DELETE' : 'PUT',
 			}),
-			invalidatesTags: (response) => ['User', 'Products', { type: 'Product', id: response?.like?.productId }],
+			invalidatesTags: (response) => ['User', { type: 'Product', id: response?.like?.productId }],
 		}),
 		getUser: builder.query<IUser, void>({
 			queryFn: async (_arg, _api, _extraOptions, fetchWithBQ) => {
+				// For some reason backend returns old data, need delay to get actual data
 				await sleep(1000);
 				const response = await fetchWithBQ({
 					url: '/users/me',
