@@ -7,9 +7,15 @@ import ProfileIcon from '../../icons/profile';
 import { Link } from 'react-router-dom';
 import { paths } from '../../app/routes';
 import { useGetUserQuery } from '../../store/api/api';
+import { useAppSelector } from '../../store/hooks';
+import { cartSelectors } from '../../store/slices/cart-slice';
+import { getCartCount } from '../../utils/utils';
 
 function Header() {
 	const { data: currentUser } = useGetUserQuery();
+	const cart = useAppSelector(cartSelectors.cart);
+
+	const cartItemsCount = getCartCount(cart);
 
 	return (
 		<AppBar position='static' elevation={0}>
@@ -29,9 +35,13 @@ function Header() {
 							</Badge>
 						</IconButton>
 					</LinkMui>
-					<IconButton aria-label='shop cart'>
-						<ShoppingBagOutlinedIcon />
-					</IconButton>
+					<LinkMui component={Link} to={paths.cart} state={{ isBack: true }} underline='none'>
+						<IconButton aria-label='shop cart'>
+							<Badge badgeContent={cartItemsCount} color='success'>
+								<ShoppingBagOutlinedIcon />
+							</Badge>
+						</IconButton>
+					</LinkMui>
 					<LinkMui component={Link} to={paths.profile} underline='none'>
 						<IconButton aria-label='open profile'>
 							<ProfileIcon />

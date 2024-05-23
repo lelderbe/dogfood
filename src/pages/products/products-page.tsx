@@ -9,11 +9,14 @@ import { filtersSelectors } from '../../store/slices/filters-slice';
 import { useAppSelector } from '../../store/hooks';
 import { LoadMore } from '../../components/load-more/load-more';
 import { useCallback, useState } from 'react';
+import { cartSelectors } from '../../store/slices/cart-slice';
 
 const ProductsPage = withProtection(() => {
 	const filters = useAppSelector(filtersSelectors.filters);
 	const [page, setPage] = useState<number>(1);
 	const { data, isLoading, isError, error, refetch, isFetching } = useGetProductsQuery({ ...filters, page });
+	const cart = useAppSelector(cartSelectors.cart);
+	console.log('cart:', cart);
 
 	const isEndOfList = data && data.products.length >= data.length;
 
