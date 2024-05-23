@@ -5,8 +5,9 @@ import { isLiked } from '../../utils/utils';
 import { useAppSelector } from '../../store/hooks';
 import { userSelectors } from '../../store/slices/user-slice';
 import { productsSelectors } from '../../store/slices/products-slice';
+import { withProtection } from '../../HOCs/withProtection';
 
-const FavoritesPage = () => {
+const FavoritesPage = withProtection(() => {
 	const products = useAppSelector(productsSelectors.products);
 	const currentUser = useAppSelector(userSelectors.currentUser);
 
@@ -21,6 +22,6 @@ const FavoritesPage = () => {
 			<ProductsList products={favoriteProducts} />
 		</>
 	);
-};
+});
 
 export default FavoritesPage;

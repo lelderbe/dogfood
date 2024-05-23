@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { getProducts } from '../../store/thunks/products';
 import { useNavigate } from 'react-router';
+import { paths } from '../../app/routes';
 
 function Search() {
 	const [search, setSearch] = useState('');
@@ -12,7 +13,7 @@ function Search() {
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
 		setSearch(e.target.value);
 		dispatch(getProducts({ searchTerm: e.target.value }));
-		navigate('/products');
+		navigate(paths.products);
 	}
 
 	return (

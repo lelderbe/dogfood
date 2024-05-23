@@ -6,8 +6,9 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { productSelectors } from '../../store/slices/product-slice';
 import { getProduct } from '../../store/thunks/product';
 import { createProductReview } from '../../store/thunks/products';
+import { withProtection } from '../../HOCs/withProtection';
 
-const ReviewPage = () => {
+const ReviewPage = withProtection(() => {
 	const { id } = useParams();
 	const product = useAppSelector(productSelectors.product);
 	const dispatch = useAppDispatch();
@@ -70,6 +71,6 @@ const ReviewPage = () => {
 			</Box>
 		</Container>
 	);
-};
+});
 
 export default ReviewPage;

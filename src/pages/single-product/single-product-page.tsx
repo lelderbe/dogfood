@@ -10,8 +10,9 @@ import { productSelectors } from '../../store/slices/product-slice';
 import { getProduct } from '../../store/thunks/product';
 import { RequestStatus } from '../../store/types';
 import { productsActions } from '../../store/slices/products-slice';
+import { withProtection } from '../../HOCs/withProtection';
 
-const SingleProductPage = () => {
+const SingleProductPage = withProtection(() => {
 	const { id } = useParams();
 	const product = useAppSelector(productSelectors.product);
 	const status = useAppSelector(productSelectors.status);
@@ -43,6 +44,6 @@ const SingleProductPage = () => {
 			{product && <ProductDetail {...product} onProductLike={handleProductLike} />}
 		</Container>
 	);
-};
+});
 
 export default SingleProductPage;

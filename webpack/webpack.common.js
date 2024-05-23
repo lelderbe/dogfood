@@ -4,6 +4,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path'); //для того чтобы превратить отнсительный путь в абсолютный мы будем использовать пакет path
 const webpack = require('webpack');
 
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
+
 const production = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -79,6 +81,9 @@ module.exports = {
 		}),
 		new webpack.EnvironmentPlugin({
 			NODE_ENV: 'development', // значение по умолчанию 'development' если переменная process.env.NODE_ENV не передана
+		}),
+		new webpack.DefinePlugin({
+			'process.env': JSON.stringify(process.env),
 		}),
 	],
 };

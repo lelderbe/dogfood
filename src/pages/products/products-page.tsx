@@ -4,8 +4,9 @@ import Sort from '../../components/sort';
 import GoToBackButton from '../../components/go-to-back';
 import { useAppSelector } from '../../store/hooks';
 import { productsSelectors } from '../../store/slices/products-slice';
+import { withProtection } from '../../HOCs/withProtection';
 
-const ProductsPage = () => {
+const ProductsPage = withProtection(() => {
 	const products = useAppSelector(productsSelectors.products);
 
 	return (
@@ -25,6 +26,6 @@ const ProductsPage = () => {
 			{products && <ProductsList products={products} />}
 		</>
 	);
-};
+});
 
 export default ProductsPage;

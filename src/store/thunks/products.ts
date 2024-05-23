@@ -14,7 +14,7 @@ export const getProducts = createAppAsyncThunk<IProduct[], SearchParams>(
 export const changeLikeProduct = createAppAsyncThunk<IProduct, IProductLikeParams>(
 	'products/changeLikeProduct',
 	async function (productData, { dispatch, getState, extra: api }) {
-		const { currentUser } = (getState() as RootState).user;
+		const currentUser = (getState() as RootState).user;
 		const isProductLiked = isLiked(productData.likes, currentUser?.id);
 		await api.changeLikeProductStatus(productData.id, isProductLiked);
 		const updatedProduct = await dispatch(getProduct(productData.id)).unwrap();
