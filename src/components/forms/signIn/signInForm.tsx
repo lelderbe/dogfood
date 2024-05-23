@@ -6,16 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { signInFormSchema } from './helpers/validator';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { toast } from 'react-toastify';
-import { useSignInMutation } from '../../../store/api/authApi';
-import { useAppDispatch } from '../../../store/hooks';
-import { userActions } from '../../../store/slices/user-slice';
-import { authActions } from '../../../store/slices/auth-slice';
 import { getMessageFromError } from '../../../utils/errorUtils';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { paths } from '../../../app/routes';
+import { useSignInMutation } from '../../../store/api/api';
 
 export const SignInForm: FC = () => {
-	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [signInRequestFn] = useSignInMutation();
@@ -33,12 +29,10 @@ export const SignInForm: FC = () => {
 
 	const submitHandler: SubmitHandler<SignInFormValues> = async (values) => {
 		try {
-			const response = await signInRequestFn(values).unwrap();
-			dispatch(userActions.setUser(response.user));
-			dispatch(authActions.setAccessToken({ accessToken: response.accessToken }));
+			await signInRequestFn(values).unwrap();
+			toast.success('Вы успешно вошли в систему');
 			navigate(location.state?.from || paths.products);
 		} catch (error) {
-			console.log({ error });
 			toast.error(getMessageFromError(error, 'Неизвестная ошибка при входе пользователя'));
 		}
 	};
@@ -57,7 +51,7 @@ export const SignInForm: FC = () => {
 				<Typography component='h1' variant='h1'>
 					Вход
 				</Typography>
-				<Box component='form' onSubmit={handleSubmit(submitHandler)} noValidate sx={{ mt: 1 }}>
+				<Box component='form' noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(submitHandler)}>
 					<Controller
 						name='email'
 						control={control}

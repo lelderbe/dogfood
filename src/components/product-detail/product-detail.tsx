@@ -2,28 +2,26 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Box, Typography, Stack, CardMedia, Button, Link as LinkMui } from '@mui/material';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import { isLiked } from '../../utils/utils';
-import { useAppSelector } from '../../store/hooks';
-import { userSelectors } from '../../store/slices/user-slice';
 import Review from '../review';
 import { Link } from 'react-router-dom';
+import { withQuery } from '../../HOCs/withQuery';
+import { useGetUserQuery, useSetProductLikeMutation } from '../../store/api/api';
 
-type TProps = {
-	onProductLike: (productData: IProductLikeParams) => void;
-} & IProduct;
+interface Props {
+	product: IProduct;
+}
 
-function ProductDetail({ id, name, images, price, likes, onProductLike, reviews }: TProps) {
-	const currentUser = useAppSelector(userSelectors.currentUser);
+function ProductDetail({ product: { id, name, images, price, reviews } }: Props) {
+	const { data: currentUser } = useGetUserQuery();
+	const [setProductLike] = useSetProductLikeMutation();
+	const isProductLiked = isLiked(currentUser?.likes, id);
 
-	function handleLikeClick() {
-		if (likes) {
-			onProductLike({ id, likes });
-		}
+	async function handleLikeClick() {
+		setProductLike({ id, liked: isProductLiked });
 	}
 
-	const isProductLiked = isLiked(likes, currentUser?.id);
-
 	return (
-		<Box>
+		<>
 			<Typography variant='h1'>{name}</Typography>
 			<Typography variant='p2'>Артикул: 2388907</Typography>
 			<Stack direction='row' gap='40px'>
@@ -92,8 +90,10 @@ function ProductDetail({ id, name, images, price, likes, onProductLike, reviews 
 			{reviews?.map((item) => {
 				return <Review key={item.id} {...item} />;
 			})}
-		</Box>
+		</>
 	);
 }
+
+export const ProductDetailWithQuery = withQuery(ProductDetail);
 
 export default ProductDetail;

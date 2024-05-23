@@ -6,8 +6,11 @@ import Logo from '../logo';
 import ProfileIcon from '../../icons/profile';
 import { Link } from 'react-router-dom';
 import { paths } from '../../app/routes';
+import { useGetUserQuery } from '../../store/api/api';
 
 function Header() {
+	const { data: currentUser } = useGetUserQuery();
+
 	return (
 		<AppBar position='static' elevation={0}>
 			<Container
@@ -21,7 +24,7 @@ function Header() {
 				<Stack spacing='10px' direction='row' sx={{ color: '#263238' }}>
 					<LinkMui component={Link} to={paths.favorites} state={{ isBack: true }} underline='none'>
 						<IconButton aria-label='favorites'>
-							<Badge badgeContent={12} color='success'>
+							<Badge badgeContent={currentUser?.likes?.length} color='success'>
 								<FavoriteBorderIcon />
 							</Badge>
 						</IconButton>
