@@ -19,7 +19,7 @@ function ProductCard({ id, images, name, price, discount, wight }: IProduct) {
 	}
 
 	function handleAddToCart() {
-		dispatch(cartActions.addProduct({ id, price, discount, count: 1 }));
+		dispatch(cartActions.addProduct({ id, price, discount, count: 1, checked: true }));
 	}
 
 	return (

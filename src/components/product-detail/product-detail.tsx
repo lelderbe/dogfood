@@ -24,7 +24,7 @@ function ProductDetail({ product: { id, name, images, price, discount, reviews }
 	}
 
 	function handleAddToCart() {
-		dispatch(cartActions.addProduct({ id, price, discount, count: 1 }));
+		dispatch(cartActions.addProduct({ id, price, discount, count: 1, checked: true }));
 	}
 
 	return (

@@ -9,14 +9,12 @@ import { filtersSelectors } from '../../store/slices/filters-slice';
 import { useAppSelector } from '../../store/hooks';
 import { LoadMore } from '../../components/load-more/load-more';
 import { useCallback, useState } from 'react';
-import { cartSelectors } from '../../store/slices/cart-slice';
+import { words } from '../../utils/utils';
 
 const ProductsPage = withProtection(() => {
 	const filters = useAppSelector(filtersSelectors.filters);
 	const [page, setPage] = useState<number>(1);
 	const { data, isLoading, isError, error, refetch, isFetching } = useGetProductsQuery({ ...filters, page });
-	const cart = useAppSelector(cartSelectors.cart);
-	console.log('cart:', cart);
 
 	const isEndOfList = data && data.products.length >= data.length;
 
@@ -38,7 +36,7 @@ const ProductsPage = withProtection(() => {
 					<Typography component='span' sx={{ fontSize: '28px', lineHeight: '32px', fontWeight: '800' }}>
 						{filters.searchTerm}
 					</Typography>{' '}
-					найдено {data?.length || 0} товаров
+					найдено {data?.length || 0} {words(data?.length || 0, ['товар', 'товара', 'товаров'])}
 				</Typography>
 			)}
 			<Sort />

@@ -5,6 +5,7 @@ export interface CartItem {
 	count: number;
 	price: IProduct['price'];
 	discount: IProduct['discount'];
+	checked: boolean;
 }
 
 const createInitialState = (): CartItem[] => [];
@@ -36,12 +37,18 @@ export const cartSlice = createSlice({
 				product.count = product.count === 1 ? 1 : product.count - 1;
 			}
 		},
-		// setProduct(state, action: PayloadAction<CartItem>) {
-		// 	return [...state.filter((item) => item.id !== action.payload.id), action.payload];
-		// },
-		// getCount(state) {
-		// 	return state.reduce((acc, item) => acc + item.count, 0);
-		// },
+		toggleProductCheck(state, action: PayloadAction<string>) {
+			const product = state.find((item) => item.id === action.payload);
+			if (product) {
+				product.checked = !product.checked;
+			}
+		},
+		selectAll(state, action: PayloadAction<boolean>) {
+			state.forEach((item) => (item.checked = action.payload));
+		},
+		removeSelected(state) {
+			return state.filter((item) => !item.checked);
+		},
 		clearCart() {
 			return createInitialState();
 		},

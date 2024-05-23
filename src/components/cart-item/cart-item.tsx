@@ -1,4 +1,4 @@
-import { IconButton, CardMedia, Stack, Typography, Button, Link as LinkMui, Box } from '@mui/material';
+import { IconButton, CardMedia, Stack, Typography, Button, Link as LinkMui, Box, Checkbox } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useGetProductByIdQuery } from '../../store/api/api';
 import { useAppDispatch } from '../../store/hooks';
@@ -6,12 +6,16 @@ import { CartItem, cartActions } from '../../store/slices/cart-slice';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import Spinner from '../spinner';
 
-function CartItem({ id, count }: CartItem) {
+function CartItem({ id, count, checked }: CartItem) {
 	const dispatch = useAppDispatch();
 	const { data: product } = useGetProductByIdQuery(id);
 
 	function handleRemoveItem() {
 		dispatch(cartActions.removeProduct(id));
+	}
+
+	function handleSelectProduct() {
+		dispatch(cartActions.toggleProductCheck(id));
 	}
 
 	if (!product) {
@@ -20,6 +24,8 @@ function CartItem({ id, count }: CartItem) {
 
 	return (
 		<Stack direction='row' alignItems='center'>
+			<Checkbox checked={checked} size='small' onChange={handleSelectProduct} />
+
 			<LinkMui component={Link} to={`/product/${id}`} state={{ isBack: true }}>
 				<CardMedia
 					component='img'
@@ -29,7 +35,7 @@ function CartItem({ id, count }: CartItem) {
 				/>
 			</LinkMui>
 
-			<Stack gap='8px' sx={{ minWidth: '244px', maxWidth: '244px', mr: '32px' }}>
+			<Stack gap='8px' sx={{ minWidth: '244px', maxWidth: '244px', mr: '24px' }}>
 				<LinkMui
 					component={Link}
 					to={`/product/${id}`}
@@ -54,7 +60,6 @@ function CartItem({ id, count }: CartItem) {
 				sx={{
 					border: '1px solid rgb(207, 216, 220)',
 					borderRadius: '100px',
-					mr: '32px',
 				}}>
 				<Button
 					variant='text'
