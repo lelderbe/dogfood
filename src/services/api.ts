@@ -10,12 +10,18 @@ type ProductListResponse = {
 	length: number;
 };
 
-type UserUpdateDto = Partial<Omit<IUser, 'favoritesPost' | 'id'> & { password: string }>;
+export type UserUpdateDto = Partial<Omit<IUser, 'favoritesPost' | 'id'> & { password: string }>;
+
+export type SearchParams = {
+	searchTerm?: string;
+};
 
 type TProductLikeResponse = {
 	message: string;
 	like: ILike;
 };
+
+export type ReviewCreateDto = Partial<Pick<IReview, 'rating' | 'text'>>;
 
 export class Api {
 	private baseUrl;
@@ -41,15 +47,16 @@ export class Api {
 	}
 
 	async getAllInfo(): Promise<[ProductListResponse, IUser]> {
-		return Promise.all([this.getProductsList(), this.getUserInfo()]);
+		return Promise.all([this.getProductsList({}), this.getUserInfo()]);
 	}
 
 	async getUserInfo() {
 		return this.request<IUser>('/users/me');
 	}
 
-	async getProductsList(searchQuery?: string) {
-		return this.request<ProductListResponse>(`/products?${searchQuery}`);
+	async getProductsList(searchQuery: SearchParams) {
+		const searchParams = new URLSearchParams(searchQuery);
+		return this.request<ProductListResponse>(`/products?${searchParams}`);
 	}
 
 	async setUserInfo(userData: UserUpdateDto) {
@@ -67,6 +74,13 @@ export class Api {
 
 	async getProductById(productID: string) {
 		return this.request<IProduct>(`/products/${productID}`);
+	}
+
+	async createReview(productID: string, reviewCreateDto: ReviewCreateDto) {
+		return this.request<IReview>(`/reviews/leave/${productID}`, {
+			method: 'POST',
+			body: JSON.stringify(reviewCreateDto),
+		});
 	}
 }
 

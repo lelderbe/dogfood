@@ -1,19 +1,20 @@
 import { Card, IconButton, Grid, CardMedia, Typography, Button, Link as LinkMui } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import noImageAvailable from './assets/no-image-available.png';
-import { SyntheticEvent, useContext } from 'react';
+import { SyntheticEvent } from 'react';
 import { isLiked } from '../../utils/utils';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../context/user-context';
-import { IProductsContext, ProductsContext } from '../../context/products-context';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { userSelectors } from '../../store/slices/user-slice';
+import { changeLikeProduct } from '../../store/thunks/products';
 
 function ProductCard({ id, images, name, price, wight, likes }: IProduct) {
-	const currentUser = useContext(UserContext);
-	const { onProductLike } = useContext(ProductsContext) as IProductsContext;
+	const currentUser = useAppSelector(userSelectors.currentUser);
+	const dispatch = useAppDispatch();
 
 	function handleLikeClick() {
 		if (likes) {
-			onProductLike({ id, likes });
+			dispatch(changeLikeProduct({ id, likes }));
 		}
 	}
 
