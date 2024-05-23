@@ -9,7 +9,7 @@ interface IProps {
 	products: IProduct[];
 }
 
-function CardList({ products }: IProps) {
+function ProductsList({ products }: IProps) {
 	const { getCurrentData, countPages, currentPage, setPagePaginated } = usePagination<IProduct>(
 		products,
 		PRODUCTS_PER_PAGE
@@ -43,4 +43,4 @@ function CardList({ products }: IProps) {
 	);
 }
 
-export default CardList;
+export default ProductsList;
