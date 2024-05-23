@@ -1,0 +1,14 @@
+<svg width="24.000000" height="24.000000" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs>
+		<clipPath id="clip2600_5077">
+			<rect id="telegram 1" width="24.000000" height="24.000000" fill="white" fill-opacity="0"/>
+		</clipPath>
+	</defs>
+	<rect id="telegram 1" width="24.000000" height="24.000000" fill="#FFFFFF" fill-opacity="0"/>
+	<g clip-path="url(#clip2600_5077)">
+		<path id="Subtract" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37256 0 0 5.37258 0 12C0 18.6274 5.37256 24 12 24ZM17.061 7.27896L5.49097 11.74C4.698 12.05 4.71191 12.489 5.35498 12.693L8.31714 13.617L15.188 9.29096C15.5071 9.07896 15.803 9.19896 15.561 9.41196L10.001 14.435L9.78809 17.488C10.0979 17.488 10.2329 17.353 10.3931 17.193L11.8401 15.799L14.8401 18.01C15.387 18.32 15.7781 18.16 15.9241 17.502L17.894 8.22096L17.8931 8.22196C18.0669 7.40997 17.5979 7.08496 17.061 7.27896Z" clip-rule="evenodd" fill="#1A1A1A" fill-opacity="1.000000" fill-rule="evenodd"/>
+	</g>
+</svg>
