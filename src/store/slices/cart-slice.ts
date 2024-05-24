@@ -34,7 +34,7 @@ export const cartSlice = createSlice({
 		decreaseProductCount(state, action: PayloadAction<string>) {
 			const product = state.find((item) => item.id === action.payload);
 			if (product) {
-				product.count = product.count === 1 ? 1 : product.count - 1;
+				product.count = product.count - 1;
 			}
 		},
 		toggleProductCheck(state, action: PayloadAction<string>) {
