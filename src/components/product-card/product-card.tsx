@@ -5,14 +5,21 @@ import { SyntheticEvent } from 'react';
 import { isLiked } from '../../utils/utils';
 import { Link } from 'react-router-dom';
 import { useGetUserQuery, useSetProductLikeMutation } from '../../store/api/api';
+import { useAppDispatch } from '../../store/hooks';
+import { cartActions } from '../../store/slices/cart-slice';
 
-function ProductCard({ id, images, name, price, wight }: IProduct) {
+function ProductCard({ id, images, name, price, discount, wight }: IProduct) {
 	const { data: currentUser } = useGetUserQuery();
 	const [setProductLike] = useSetProductLikeMutation();
 	const isProductLiked = isLiked(currentUser?.likes, id);
+	const dispatch = useAppDispatch();
 
-	async function handleLikeClick() {
+	function handleLikeClick() {
 		setProductLike({ id, liked: isProductLiked });
+	}
+
+	function handleAddToCart() {
+		dispatch(cartActions.addProduct({ id, price, discount, count: 1, checked: true }));
 	}
 
 	return (
@@ -57,7 +64,9 @@ function ProductCard({ id, images, name, price, wight }: IProduct) {
 					}}>
 					{name}
 				</Typography>
-				<Button variant='primary'>В корзину</Button>
+				<Button variant='primary' onClick={handleAddToCart}>
+					В корзину
+				</Button>
 			</Card>
 		</Grid>
 	);

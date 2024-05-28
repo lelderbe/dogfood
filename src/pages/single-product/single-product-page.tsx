@@ -1,4 +1,3 @@
-import { Container } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import GoToBackButton from '../../components/go-to-back';
 import { withProtection } from '../../HOCs/withProtection';
@@ -11,7 +10,7 @@ const SingleProductPage = withProtection(() => {
 	const { data, isLoading, isError, error, refetch } = useGetProductByIdQuery(id!, { skip: id === undefined });
 
 	return (
-		<Container>
+		<>
 			<GoToBackButton />
 			<ProductDetailWithQuery
 				isLoading={isLoading}
@@ -20,7 +19,7 @@ const SingleProductPage = withProtection(() => {
 				refetch={refetch}
 				product={data!}
 			/>
-		</Container>
+		</>
 	);
 });
 

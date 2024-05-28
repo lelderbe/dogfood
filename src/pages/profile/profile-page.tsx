@@ -5,6 +5,7 @@ import { withProtection } from '../../HOCs/withProtection';
 import { authActions } from '../../store/slices/auth-slice';
 import { paths } from '../../app/routes';
 import { useGetUserQuery, useRefetchUserMutation } from '../../store/api/api';
+import { cartActions } from '../../store/slices/cart-slice';
 
 const ProfilePage = withProtection(() => {
 	const dispatch = useAppDispatch();
@@ -13,6 +14,7 @@ const ProfilePage = withProtection(() => {
 
 	function handleLogout() {
 		dispatch(authActions.clearToken());
+		dispatch(cartActions.clearCart());
 		refetchUser();
 	}
 

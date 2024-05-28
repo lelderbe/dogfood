@@ -6,18 +6,25 @@ import Review from '../review';
 import { Link } from 'react-router-dom';
 import { withQuery } from '../../HOCs/withQuery';
 import { useGetUserQuery, useSetProductLikeMutation } from '../../store/api/api';
+import { cartActions } from '../../store/slices/cart-slice';
+import { useAppDispatch } from '../../store/hooks';
 
 interface Props {
 	product: IProduct;
 }
 
-function ProductDetail({ product: { id, name, images, price, reviews } }: Props) {
+function ProductDetail({ product: { id, name, images, price, discount, reviews } }: Props) {
 	const { data: currentUser } = useGetUserQuery();
 	const [setProductLike] = useSetProductLikeMutation();
 	const isProductLiked = isLiked(currentUser?.likes, id);
+	const dispatch = useAppDispatch();
 
 	async function handleLikeClick() {
 		setProductLike({ id, liked: isProductLiked });
+	}
+
+	function handleAddToCart() {
+		dispatch(cartActions.addProduct({ id, price, discount, count: 1, checked: true }));
 	}
 
 	return (
@@ -31,6 +38,9 @@ function ProductDetail({ product: { id, name, images, price, reviews } }: Props)
 					<Typography variant='h1' sx={{ mb: '24px' }}>
 						{price} ₽
 					</Typography>
+					<Button variant='primary' sx={{ mb: '24px' }} onClick={handleAddToCart}>
+						В корзину
+					</Button>
 					<Button variant='text' sx={{ mb: '24px', justifyContent: 'flex-start' }} onClick={handleLikeClick}>
 						<Stack direction='row' gap='8px' alignItems='center'>
 							<FavoriteIcon fontSize='small' sx={{ fill: isProductLiked ? 'red' : '' }} />

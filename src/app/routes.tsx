@@ -1,3 +1,4 @@
+import CartPage from '../pages/cart';
 import FavoritesPage from '../pages/favorites';
 import HomePage from '../pages/home';
 import NotFoundPage from '../pages/not-found';
@@ -19,6 +20,7 @@ export const paths = {
 	review: '/reviews/leave/:id',
 	signUp: '/signup',
 	login: '/login',
+	cart: '/cart',
 };
 
 export const routes = [
@@ -57,6 +59,10 @@ export const routes = [
 	{
 		path: paths.login,
 		element: <SignInPage />,
+	},
+	{
+		path: paths.cart,
+		element: <CartPage />,
 	},
 	{
 		path: '*',
